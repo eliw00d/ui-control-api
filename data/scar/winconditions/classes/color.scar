@@ -7,23 +7,40 @@ Color = setmetatable(
 		local public = setmetatable({}, static);		
 		local private = {};
 		
+		--[[ Gets the Red value of this Color.
+		--
+		-- @return		Red value
+		--]]
 		public.getRed = function()
 			return private.red or 0;
 		end
 		
+		--[[ Gets the Green value in this Color.
+		--
+		-- @return		Green value
+		--]]
 		public.getGreen = function()
 			return private.green or 0;
 		end
 		
+		--[[ Gets the Blue value in this Color.
+		--
+		-- @return		Blue value
+		--]]
 		public.getBlue = function()
 			return private.blue or 0;
 		end
 		
+		--[[ Gets the Alpha value in this Color.
+		--
+		-- @return		Alpha value
+		--]]
 		public.getAlpha = function()
 			return private.alpha or 255;
 		end
 		
 		do
+			-- Initialize Red, Green, Blue, and Alpha values to non-nil arguments
 			private.red = red;
 			private.green = green;
 			private.blue = blue;

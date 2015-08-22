@@ -9,10 +9,18 @@ Control = setmetatable(
 		local public = setmetatable({}, static);		
 		local private = {};
 		
+		--[[ Gets the Path for this Control
+		-- 
+		-- @return					Path for this Control
+		--]]
 		public.getPath = function()
 			return private.path or "";
 		end
 		
+		--[[ Sets the Path for this Control. If the given Path is an empty string, sets the Path to the Name. Otherwise, append the Name to the given Path.
+		--
+		-- @param					Path for this Control
+		--]]
 		public.setPath = function(path)
 			if ( path == "" ) then
 				private.path = private.name;
@@ -21,54 +29,93 @@ Control = setmetatable(
 			end
 		end
 		
+		--[[ Gets the Name for this Control.
+		--
+		-- @return					Name for this Control
+		--]]
 		public.getName = function()
 			return private.name or "";
 		end
 		
+		--[[ Sets the Name for this Control.
+		--
+		-- @param name				Name for this Control
+		--]]
 		public.setName = function(name)
 			private.name = name;
 		end
 		
+		--[[ Gets the X-coordinate for this Control.
+		--
+		-- @return					X-coordinate for this Control
+		--]]
 		public.getX = function()
 			return private.x or 0;
 		end
 		
+		--[[ Gets the Y-coordinate for this Control.
+		--
+		-- @return					Y-coordinate for this Control
+		--]]
 		public.getY = function()
 			return private.y or 0;
 		end
 		
+		--[[ Sets the Location for this Control in memory. If the Path is non-empty, updates the Location for this Control on-screen.
+		--
+		-- @param x					X-coordinate for this Control
+		-- @param y					Y-coordinate for this Control
+		--]]
 		public.setLocation = function(x, y)
 			private.x = x;
 			private.y = y;
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
 			end
 		end
 		
+		--[[ Gets the Width for this Control.
+		--
+		-- @return					Width for this Control
+		--]]
 		public.getWidth = function()
 			return private.width or 0;
 		end
 		
+		--[[ Gets the Height for this Control.
+		--
+		-- @return					Height for this Control
+		--]]
 		public.getHeight = function()
 			return private.height or 0;
 		end
 		
+		--[[ Sets the Size for this Control. If the Path is non-empty, updates the Size for this Control on-screen.
+		--
+		-- @param width				Width for this Control
+		-- @param height			Height for this Control
+		--]]
 		public.setSize = function(width, height)
 			private.width = width;
 			private.height = height;
 			
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
 			end
 		end
 		
+		--[[ Sets the Bounds for this Control. If the Path is non-empty, updates the Bounds for this Control on-screen.
+		--
+		-- @param x					X-coordinate for this Control
+		-- @param y					Y-coordinate for this Control
+		-- @param width				Width for this Control
+		-- @param height			Height for this Control
+		--]]
 		public.setBounds = function(x, y, width, height)
 			private.x = x;
 			private.y = y;
@@ -77,69 +124,101 @@ Control = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
 			end
 		end
 		
+		--[[ Gets the Color for this Control.
+		--
+		-- @return					Color for this Control
+		--]]
 		public.getColor = function()
 			return private.color;
 		end
 		
+		--[[ Sets the Color for this Control. If the Path is non-empty, updates the Color for this Control on-screen.
+		--
+		-- @param color				Color for this Control
+		--]]
 		public.setColor = function(color)
 			private.color = color;
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ControlSetColour(path, public.getColor().getRed(), public.getColor().getGreen(), public.getColor().getBlue(), public.getColor().getAlpha());
 			end
 		end
 		
-		public.getControls = function()
-			return private.controls;
+		--[[ Gets the Children for this Control.
+		--
+		-- @return					Children for this Control
+		--]]
+		public.getChildren = function()
+			return private.children;
 		end
 		
-		public.add = function(control)
+		--[[ Adds a Child to this Control. Sets this Control as the Parent of the given Child. If the Path is non-empty, call the onAdd method of the Child.
+		--
+		-- @param child					Child to add
+		--]]
+		public.add = function(child)
 			local path = public.getPath();
 			
-			control.setParent(public);
+			child.setParent(public);
 			
-			if ( path == "" ) then
-			else
-				control.onAdd(path);
+			if ( path ~= "" ) then
+				child.onAdd(path);
 			end
 			
-			table.insert(private.controls, control);
+			table.insert(private.children, child);
 		end
 		
+		--[[ Clears any Children of this Control.
+		--
+		--]]
 		public.clear = function()
+			private.children = {};
+		
 			UI_ControlClear(public.getPath());
 		end
 		
-		public.remove = function(controlToRemove)
-			for i,control in ipairs(private.controls)
+		--[[ Removes a Child from this Control.
+		--
+		-- @param childToRemove		Child to remove
+		--]]
+		public.remove = function(childToRemove)
+			for i,child in ipairs(public.getChildren())
 			do
-				if ( control == controlToRemove ) then
-					private.controls[i] = nil;
+				if ( child == childToRemove ) then
+					private.children[i] = nil;
+					break;
 				end
 			end
 		
-			UI_ControlRemove(controlToRemove.getPath());
+			UI_ControlRemove(childToRemove.getPath());
 		end
 		
+		--[[ Gets the Parent for this Control.
+		--
+		-- @return					Parent for this Control
+		--]]
 		public.getParent = function()
 			return private.parent;
 		end
 		
+		--[[ Sets the Parent for this Control.
+		--
+		-- @return					Parent for this Control
+		--]]
 		public.setParent = function(parent)
 			private.parent = parent;
 		end
 			
 		do
-			private.controls = {};
+			-- Initialize Children as an empty table.
+			private.children = {};
 		end
 		
 		return public;

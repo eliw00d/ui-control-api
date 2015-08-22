@@ -62,8 +62,7 @@ Label = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_LabelSetText(path, public.getText());
 			end
 		end

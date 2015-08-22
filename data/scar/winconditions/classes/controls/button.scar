@@ -26,8 +26,7 @@ Button = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ButtonSetEnabled(path, public.isEnabled());
 			end
 		end
@@ -41,8 +40,7 @@ Button = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ButtonSetIcon(path, public.getIcon());
 			end
 		end
@@ -64,8 +62,7 @@ Button = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ButtonSetTag(path, public.getTag());
 			end
 		end
@@ -79,8 +76,7 @@ Button = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ButtonSetText(path, public.getText());
 			end
 		end
@@ -98,8 +94,7 @@ Button = setmetatable(
 		
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_ButtonSetCallback(path, public.getCallback());
 			end
 		end

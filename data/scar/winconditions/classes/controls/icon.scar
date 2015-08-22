@@ -22,8 +22,7 @@ Icon = setmetatable(
 			
 			local path = public.getPath();
 		
-			if ( path == "" ) then
-			else
+			if ( path ~= "" ) then
 				UI_IconSetIcon(path, public.getIcon());
 			end			
 		end

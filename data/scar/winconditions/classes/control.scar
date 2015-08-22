@@ -1,5 +1,16 @@
 import("WinConditions/classes/Color.scar");
 
+--[[ Creates a Localized String from the given Text.
+-- @param text					Text
+-- @return						Localized String
+--]]
+function Loc_Create(text)
+	local loc = LOC(text);
+		  loc[1] = text;
+	
+	return loc;
+end
+
 Control = setmetatable(
 {
 

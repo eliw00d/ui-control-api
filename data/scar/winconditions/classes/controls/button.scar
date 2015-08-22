@@ -73,7 +73,7 @@ Button = setmetatable(
 		
 		public.setText = function(text)
 			if ( type(text) ~= "userdata" ) then
-				text = LOC(text);
+				text = Loc_Create(text);
 			end
 		
 			private.text = text;

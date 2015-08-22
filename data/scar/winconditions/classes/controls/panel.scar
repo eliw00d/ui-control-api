@@ -1,0 +1,42 @@
+import("WinConditions\\classes\\Control.scar");
+
+local super = Control;
+
+Panel = setmetatable(
+{
+	count = 0,
+},
+{
+	__index = super,
+
+	__call = function(static)
+		local public = setmetatable(super(), static);		
+		local private = {};
+		
+		public.onAdd = function(path)
+			public.setPath(path);
+		
+			UI_PanelAdd(path, public.getName(), public.getX(), public.getY());
+			
+			local color = public.getColor();
+			
+			if ( color ) then
+				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+			end
+			
+			local controls = public.getControls();
+			
+			for _,control in pairs(controls)
+			do
+				control.onAdd(public.getPath());
+			end
+		end
+		
+		do			
+			static.count = static.count + 1;
+			public.setName("p" .. static.count);
+		end
+		
+		return public;
+	end,
+});

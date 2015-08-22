@@ -1,0 +1,44 @@
+import("WinConditions\\classes\\Control.scar");
+
+local super = Control;
+
+Icon = setmetatable(
+{
+	count = 0,
+},
+{
+	__index = super,
+
+	__call = function(static)
+		local public = setmetatable(super(), static);		
+		local private = {};
+		
+		public.getIcon = function()
+			return private.icon or "";
+		end
+		
+		public.setIcon = function(icon)	
+			private.icon = icon;
+			
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_IconSetIcon(path, public.getIcon());
+			end			
+		end
+		
+		public.onAdd = function(path)
+			public.setPath(path);
+		
+			UI_IconAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getIcon());
+		end
+		
+		do			
+			static.count = static.count + 1;
+			public.setName("i" .. static.count);
+		end
+		
+		return public;
+	end,
+});

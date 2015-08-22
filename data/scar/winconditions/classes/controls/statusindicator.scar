@@ -1,0 +1,50 @@
+import("WinConditions\\classes\\Control.scar");
+
+local super = Control;
+
+StatusIndicator = setmetatable(
+{
+	count = 0,
+},
+{
+	__index = super,
+
+	__call = function(static)
+		local public = setmetatable(super(), static);		
+		local private = {};
+		
+		public.getValue = function()
+			return private.value or 0;
+		end
+		
+		public.setValue = function(value)	
+			private.value = value;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_StatusIndicatorSetValue(public.getPath(), public.getValue());	
+			end
+		end
+		
+		public.onAdd = function(path)
+			public.setPath(path);
+		
+			UI_StatusIndicatorAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getValue());
+			
+			local color = public.getColor();
+			
+			if ( color ) then			
+				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+			end
+		end
+		
+		do			
+			static.count = static.count + 1;
+			public.setName("si" .. static.count);
+		end
+		
+		return public;
+	end,
+});

@@ -1,0 +1,44 @@
+Color = setmetatable(
+{
+
+},
+{
+	__call = function(static, red, green, blue, alpha)
+		local public = setmetatable({}, static);		
+		local private = {};
+		
+		public.getRed = function()
+			return private.red or 0;
+		end
+		
+		public.getGreen = function()
+			return private.green or 0;
+		end
+		
+		public.getBlue = function()
+			return private.blue or 0;
+		end
+		
+		public.getAlpha = function()
+			return private.alpha or 255;
+		end
+		
+		do
+			private.red = red;
+			private.green = green;
+			private.blue = blue;
+			private.alpha = alpha;
+		end
+		
+		return public;
+	end,
+});
+
+-- primary colors
+Color.Red = Color(255, 0, 0);
+Color.Green = Color(0, 255, 0);
+Color.Blue = Color(0, 0, 255);
+	
+-- other colors
+Color.Black = Color(0, 0, 0);
+Color.White = Color(255, 255, 255);

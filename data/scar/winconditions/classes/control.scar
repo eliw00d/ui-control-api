@@ -1,0 +1,147 @@
+import("WinConditions\\classes\\Color.scar");
+
+Control = setmetatable(
+{
+
+},
+{
+	__call = function(static)
+		local public = setmetatable({}, static);		
+		local private = {};
+		
+		public.getPath = function()
+			return private.path or "";
+		end
+		
+		public.setPath = function(path)
+			if ( path == "" ) then
+				private.path = private.name;
+			else
+				private.path = path .. "." .. private.name;
+			end
+		end
+		
+		public.getName = function()
+			return private.name or "";
+		end
+		
+		public.setName = function(name)
+			private.name = name;
+		end
+		
+		public.getX = function()
+			return private.x or 0;
+		end
+		
+		public.getY = function()
+			return private.y or 0;
+		end
+		
+		public.setLocation = function(x, y)
+			private.x = x;
+			private.y = y;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
+			end
+		end
+		
+		public.getWidth = function()
+			return private.width or 0;
+		end
+		
+		public.getHeight = function()
+			return private.height or 0;
+		end
+		
+		public.setSize = function(width, height)
+			private.width = width;
+			private.height = height;
+			
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
+			end
+		end
+		
+		public.setBounds = function(x, y, width, height)
+			private.x = x;
+			private.y = y;
+			private.width = width;
+			private.height = height;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ControlSetRect(path, public.getX(), public.getY(), public.getWidth(), public.getHeight());
+			end
+		end
+		
+		public.getColor = function()
+			return private.color;
+		end
+		
+		public.setColor = function(color)
+			private.color = color;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ControlSetColour(path, public.getColor().getRed(), public.getColor().getGreen(), public.getColor().getBlue(), public.getColor().getAlpha());
+			end
+		end
+		
+		public.getControls = function()
+			return private.controls;
+		end
+		
+		public.add = function(control)
+			local path = public.getPath();
+			
+			control.setParent(public);
+			
+			if ( path == "" ) then
+			else
+				control.onAdd(path);
+			end
+			
+			table.insert(private.controls, control);
+		end
+		
+		public.clear = function()
+			UI_ControlClear(public.getPath());
+		end
+		
+		public.remove = function(controlToRemove)
+			for i,control in ipairs(private.controls)
+			do
+				if ( control == controlToRemove ) then
+					private.controls[i] = nil;
+				end
+			end
+		
+			UI_ControlRemove(controlToRemove.getPath());
+		end
+		
+		public.getParent = function()
+			return private.parent;
+		end
+		
+		public.setParent = function(parent)
+			private.parent = parent;
+		end
+			
+		do
+			private.controls = {};
+		end
+		
+		return public;
+	end,
+});

@@ -1,0 +1,134 @@
+import("WinConditions\\classes\\Control.scar");
+
+local super = Control;
+
+Button = setmetatable(
+{
+	count = 0,
+},
+{
+	__index = super,
+
+	__call = function(static, text, icon)
+		local public = setmetatable(super(), static);		
+		local private = {};		
+		
+		public.isEnabled = function()
+			if ( private.isEnabled == nil ) then
+				private.isEnabled = true;
+			end
+		
+			return private.isEnabled;
+		end
+		
+		public.setEnabled = function(isEnabled)
+			private.isEnabled = isEnabled;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ButtonSetEnabled(path, public.isEnabled());
+			end
+		end
+		
+		public.getIcon = function()
+			return private.icon or "";
+		end
+		
+		public.setIcon = function(icon)	
+			private.icon = icon;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ButtonSetIcon(path, public.getIcon());
+			end
+		end
+		
+		public.getIconStyle = function()
+			return private.iconStyle or BIS_Icon;
+		end
+		
+		public.setIconStyle = function(iconStyle)
+			private.iconStyle = iconStyle;
+		end
+		
+		public.getTag = function()
+			return private.tag or "";
+		end
+		
+		public.setTag = function(tag)
+			private.tag = tag;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ButtonSetTag(path, public.getTag());
+			end
+		end
+		
+		public.getText = function()
+			return private.text or Loc_Empty();
+		end
+		
+		public.setText = function(text)
+			private.text = Loc_Create(text);
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ButtonSetText(path, public.getText());
+			end
+		end
+		
+		public.getCallback = function()
+			return private.callback or "";
+		end
+		
+		public.setCallback = function(func)
+			local callback = public.getName();
+		
+			_G[callback] = func;
+		
+			private.callback = callback;
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_ButtonSetCallback(path, public.getCallback());
+			end
+		end
+		
+		public.onAdd = function(path)			
+			public.setPath(path);
+		
+			UI_ButtonAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getCallback(), public.isEnabled(), public.getIcon(), public.getIconStyle(), public.getTag(), public.getText());
+			
+			local color = public.getColor();
+			
+			if ( color ) then			
+				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+			end
+		end
+		
+		do			
+			static.count = static.count + 1;		
+			public.setName("b" .. static.count);
+			
+			if ( text ) then
+				public.setText(text);		
+			end
+			
+			if ( icon ) then
+				public.setIcon(icon);
+			end
+		end
+		
+		return public;
+	end,
+});

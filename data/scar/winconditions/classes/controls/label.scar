@@ -1,0 +1,90 @@
+import("WinConditions\\classes\\Control.scar");
+
+local super = Control;
+
+Label = setmetatable(
+{
+	count = 0,
+},
+{
+	__index = super,
+
+	__call = function(static)
+		local public = setmetatable(super(), static);		
+		local private = {};
+		
+		public.getHorizontalAlignment = function()
+			return private.horizontalAlignment or LAH_Justify;
+		end
+		
+		public.setHorizontalAlignment = function(horizontalAlignment)
+			private.horizontalAlignment = horizontalAlignment;
+		end
+		
+		public.getVerticalAlignment = function()
+			return private.verticalAlignment or LAV_None;
+		end
+		
+		public.setVerticalAlignment = function(verticalAlignment)
+			private.verticalAlignment = verticalAlignment;
+		end
+		
+		public.isBolded = function()
+			return private.isBolded or false;
+		end
+		
+		public.setBolded = function(isBolded)
+			private.isBolded = isBolded;
+		end
+		
+		public.isItalicized = function()
+			return private.isItalicized or false;
+		end
+		
+		public.setItalicized = function(isItalicized)
+			private.isItalicized = isItalicized;
+		end
+		
+		public.getFontSize = function()
+			return private.fontSize or 12;
+		end
+		
+		public.setFontSize = function(fontSize)
+			private.fontSize = fontSize;
+		end
+		
+		public.getText = function()
+			return private.text or Loc_Empty();
+		end
+		
+		public.setText = function(text)
+			private.text = Loc_Create(text);
+		
+			local path = public.getPath();
+		
+			if ( path == "" ) then
+			else
+				UI_LabelSetText(path, public.getText());
+			end
+		end
+		
+		public.onAdd = function(path)
+			public.setPath(path);
+		
+			UI_LabelAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getHorizontalAlignment(), public.getVerticalAlignment(), public.isBolded(), public.isItalicized(), public.getFontSize(), public.getText());
+			
+			local color = public.getColor();
+			
+			if ( color ) then			
+				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
+			end
+		end
+		
+		do			
+			static.count = static.count + 1;		
+			public.setName("l" .. static.count);
+		end
+		
+		return public;
+	end,
+});

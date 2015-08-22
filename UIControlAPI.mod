@@ -41,6 +41,22 @@
 			</Children>
 			<IsExpanded>true</IsExpanded>
 		</d2p1:anyType>
+		<d2p1:anyType i:type="TableOfContents">
+			<Alias>Locale</Alias>
+			<Children>
+				<d2p1:anyType i:type="Folder">
+					<Children>
+						<d2p1:anyType i:type="BurnFile">
+							<BurnSettings i:nil="true" />
+							<RelativeName>locale\english\english.ucs</RelativeName>
+						</d2p1:anyType>
+					</Children>
+					<IsExpanded>true</IsExpanded>
+					<Name>english</Name>
+				</d2p1:anyType>
+			</Children>
+			<IsExpanded>true</IsExpanded>
+		</d2p1:anyType>
 	</Children>
 	<Guid>043d372b-fbda-460e-99c8-0ead66f64aed</Guid>
 	<IsExpanded>false</IsExpanded>

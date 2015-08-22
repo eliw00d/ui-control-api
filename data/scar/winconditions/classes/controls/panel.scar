@@ -24,11 +24,9 @@ Panel = setmetatable(
 				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
 			end
 			
-			local controls = public.getControls();
-			
-			for _,control in pairs(controls)
+			for _,child in pairs(public.getChildren())
 			do
-				control.onAdd(public.getPath());
+				child.onAdd(public.getPath());
 			end
 		end
 		

@@ -1,6 +1,13 @@
 import("ScarUtil.scar")
 import("Fatalities/Fatalities.scar")
 
+import("Classes/controls/Button.scar")
+import("Classes/controls/Icon.scar")
+import("Classes/controls/Label.scar")
+import("Classes/controls/Panel.scar")
+import("Classes/controls/Panels/RootPanel.scar")
+import("Classes/controls/StatusIndicator.scar")
+
 function WinCondition_GameOver(winningTeam, losingTeam)
 	-- Set the winning team (this will fire win/loss events for each player).
 	World_SetTeamWin(winningTeam)
@@ -54,6 +61,12 @@ end
 
 local function WinCondition_Init()
 	Rule_AddInterval(WinCondition_Check, 3)
+	
+	local rootPanel = RootPanel();
+	
+	local button = Button("Test");
+	
+	rootPanel.add(button);
 end
 
 Scar_AddInit(WinCondition_Init)

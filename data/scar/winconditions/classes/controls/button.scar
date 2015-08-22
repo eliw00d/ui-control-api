@@ -1,4 +1,4 @@
-import("WinConditions\\classes\\Control.scar");
+import("WinConditions/classes/Control.scar");
 
 local super = Control;
 

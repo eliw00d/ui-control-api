@@ -20,7 +20,7 @@
 						<d2p1:anyType i:type="BurnFolder">
 							<BurnSettings />
 							<Hint>Default</Hint>
-							<RelativeName>data\game\winconditions</RelativeName>
+							<RelativeName>data\game</RelativeName>
 						</d2p1:anyType>
 					</Children>
 					<IsExpanded>true</IsExpanded>

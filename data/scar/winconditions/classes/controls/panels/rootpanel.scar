@@ -1,0 +1,22 @@
+import("WinConditions/classes/controls/Panel.scar");
+
+local super = Panel;
+
+RootPanel = setmetatable(
+{
+
+},
+{
+	__index = super,
+
+	__call = function(static)
+		local public = setmetatable(super(), static);		
+		local private = {};
+		
+		do			
+			public.onAdd("");
+		end
+		
+		return public;
+	end,
+});

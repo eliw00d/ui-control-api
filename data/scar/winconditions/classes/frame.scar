@@ -1,0 +1,21 @@
+Frame = setmetatable(
+{
+
+},
+{
+	__call = function(static)
+		local public = setmetatable({}, static);		
+		local private = {};
+		
+		public.getContentPane = function()
+			return private.contentPane;
+		end
+		
+		do			
+			private.contentPane = Panel();
+			private.contentPane.onAdd("");
+		end
+		
+		return public;
+	end,
+});

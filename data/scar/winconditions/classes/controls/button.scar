@@ -13,6 +13,10 @@ Button = setmetatable(
 		local public = setmetatable(super(), static);		
 		local private = {};		
 		
+		--[[ Gets whether or not the Button is enabled.
+		--
+		-- @return					Whether or not the Button is enabled.
+		--]]
 		public.isEnabled = function()
 			if ( private.isEnabled == nil ) then
 				private.isEnabled = true;
@@ -21,6 +25,10 @@ Button = setmetatable(
 			return private.isEnabled;
 		end
 		
+		--[[ Sets whether or not the Button is enabled. If the Path is an empty string, sets whether or not the Button is enabled on-screen.
+		--
+		-- @param isEnabled			Whether or not the Button is enabled.
+		--]]
 		public.setEnabled = function(isEnabled)
 			private.isEnabled = isEnabled;
 		
@@ -31,10 +39,16 @@ Button = setmetatable(
 			end
 		end
 		
+		--[[ Gets the Icon for this Button.
+		-- @return					Icon for this Button.
+		--]]
 		public.getIcon = function()
 			return private.icon or "";
 		end
 		
+		--[[ Sets the Icon for this Button in memory. If the Path is non-empty, updates the Icon for this Button on-screen.
+		-- @param icon				Icon for this Button.
+		--]]
 		public.setIcon = function(icon)	
 			private.icon = icon;
 		
@@ -45,18 +59,30 @@ Button = setmetatable(
 			end
 		end
 		
+		--[[ Gets the Icon Style for this Button.
+		-- @return					Icon Style for this Button.
+		--]]
 		public.getIconStyle = function()
 			return private.iconStyle or BIS_Icon;
 		end
 		
+		--[[ Set the Icon Style for this Button. 
+		-- @param iconStyle			Icon Style for this Button. Options are BIS_Icon and BIS_IconState. BIS_Icon applies its own filters to the icon. BIS_IconState looks for _disabled, _down, _over, and _up suffixed icons.
+		--]]
 		public.setIconStyle = function(iconStyle)
 			private.iconStyle = iconStyle;
 		end
 		
+		--[[ Get the Tag for this Button.
+		-- @return					Tag for this Button. Can be used in Callbacks.
+		--]]
 		public.getTag = function()
 			return private.tag or "";
 		end
 		
+		--[[ Sets the Tag for this Button. If the Path is non-empty, updates the Tag for this Button on-screen.
+		-- @param tag				Tag for this Button. Can be used in Callbacks.
+		--]]
 		public.setTag = function(tag)
 			private.tag = tag;
 		
@@ -67,10 +93,17 @@ Button = setmetatable(
 			end
 		end
 		
+		--[[ Gets the Text for this Button.
+		-- @return					Text for this Button.
+		--]]
 		public.getText = function()
 			return private.text or Loc_Empty();
 		end
 		
+		
+		--[[ Sets the Text for this Button. If the Path is non-empty, updates the Text for this Button on-screen.
+		-- @param text				Text for this Button. Assumed to be a LocString. If not, creates a LocString for you using the given Lua String.
+		--]]
 		public.setText = function(text)
 			if ( type(text) ~= "userdata" ) then
 				text = Loc_Create(text);
@@ -85,10 +118,16 @@ Button = setmetatable(
 			end
 		end
 		
+		--[[ Gets the Callback for this Button.
+		-- @return					Callback for this Button.
+		--]]
 		public.getCallback = function()
 			return private.callback or "";
 		end
 		
+		--[[ Sets the Callback for this Button.
+		-- @param func				Callback for this Button.
+		--]]
 		public.setCallback = function(func)
 			local callback = public.getName();
 		
@@ -103,6 +142,9 @@ Button = setmetatable(
 			end
 		end
 		
+		--[[ Adds this Button to the given Path.
+		-- @param					Path of the Parent.
+		--]]
 		public.onAdd = function(path)			
 			public.setPath(path);
 		
@@ -115,14 +157,17 @@ Button = setmetatable(
 			end
 		end
 		
-		do			
+		do
+			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;		
 			public.setName("b" .. static.count);
 			
+			-- If Text is given as an argument, set it.
 			if ( text ) then
 				public.setText(text);		
 			end
 			
+			-- If Icon is given as an argument, set it.
 			if ( icon ) then
 				public.setIcon(icon);
 			end

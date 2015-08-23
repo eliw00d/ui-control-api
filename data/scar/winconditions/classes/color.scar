@@ -1,8 +1,16 @@
+-- Base Class, no super
+
+--[[ The Color class contains the red, green, blue, and alpha values needed to create Colors.
+--
+-- Constructor: Color([r], [g], [b], [a])
+--]]
 Color = setmetatable(
 {
 
 },
 {
+	-- Base Class, no __index
+
 	__call = function(static, red, green, blue, alpha)
 		local public = setmetatable({}, static);		
 		local private = {};
@@ -40,7 +48,7 @@ Color = setmetatable(
 		end
 		
 		do
-			-- Initialize Red, Green, Blue, and Alpha values to non-nil arguments
+			-- Initialize Red, Green, Blue, and Alpha values to non-nil arguments. DO NOT MODIFY!
 			private.red = red;
 			private.green = green;
 			private.blue = blue;
@@ -51,11 +59,14 @@ Color = setmetatable(
 	end,
 });
 
--- primary colors
+-- Primary Colors
 Color.Red = Color(255, 0, 0);
 Color.Green = Color(0, 255, 0);
 Color.Blue = Color(0, 0, 255);
 	
--- other colors
+-- Other Colors
 Color.Black = Color(0, 0, 0);
 Color.White = Color(255, 255, 255);
+
+-- Custom Colors
+-- TODO: Add your own colors here.

@@ -1,17 +1,24 @@
 import("WinConditions/classes/Color.scar");
 
+-- Base Class, no super
+
+--[[ The Control class should be considered an abstract class, and so should not be instantiated. It is meant for providing common functionality to all inheriting subclasses.
+--
+--]]
 Control = setmetatable(
 {
 
 },
 {
+	-- Base Class, no __index
+
 	__call = function(static)
 		local public = setmetatable({}, static);		
 		local private = {};
 		
-		--[[ Gets the Path for this Control
+		--[[ Gets the Path for this Control.
 		-- 
-		-- @return					Path for this Control
+		-- @return					Path for this Control.
 		--]]
 		public.getPath = function()
 			return private.path or "";
@@ -19,7 +26,7 @@ Control = setmetatable(
 		
 		--[[ Sets the Path for this Control. If the given Path is an empty string, sets the Path to the Name. Otherwise, append the Name to the given Path.
 		--
-		-- @param					Path for this Control
+		-- @param					Path for this Control. Options are: String.
 		--]]
 		public.setPath = function(path)
 			if ( path == "" ) then
@@ -31,7 +38,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Name for this Control.
 		--
-		-- @return					Name for this Control
+		-- @return					Name for this Control.
 		--]]
 		public.getName = function()
 			return private.name or "";
@@ -39,7 +46,7 @@ Control = setmetatable(
 		
 		--[[ Sets the Name for this Control.
 		--
-		-- @param name				Name for this Control
+		-- @param name				Name for this Control. Options are: String.
 		--]]
 		public.setName = function(name)
 			private.name = name;
@@ -47,7 +54,7 @@ Control = setmetatable(
 		
 		--[[ Gets the X-coordinate for this Control.
 		--
-		-- @return					X-coordinate for this Control
+		-- @return					X-coordinate for this Control.
 		--]]
 		public.getX = function()
 			return private.x or 0;
@@ -55,16 +62,16 @@ Control = setmetatable(
 		
 		--[[ Gets the Y-coordinate for this Control.
 		--
-		-- @return					Y-coordinate for this Control
+		-- @return					Y-coordinate for this Control.
 		--]]
 		public.getY = function()
 			return private.y or 0;
 		end
 		
-		--[[ Sets the Location for this Control in memory. If the Path is non-empty, updates the Location for this Control on-screen.
+		--[[ Sets the Location for this Control. If the Path is non-empty, updates the Location for this Control on-screen.
 		--
-		-- @param x					X-coordinate for this Control
-		-- @param y					Y-coordinate for this Control
+		-- @param x					X-coordinate for this Control. Options are: Number.
+		-- @param y					Y-coordinate for this Control. Options are: Number.
 		--]]
 		public.setLocation = function(x, y)
 			private.x = x;
@@ -79,7 +86,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Width for this Control.
 		--
-		-- @return					Width for this Control
+		-- @return					Width for this Control.
 		--]]
 		public.getWidth = function()
 			return private.width or 0;
@@ -87,7 +94,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Height for this Control.
 		--
-		-- @return					Height for this Control
+		-- @return					Height for this Control.
 		--]]
 		public.getHeight = function()
 			return private.height or 0;
@@ -95,8 +102,8 @@ Control = setmetatable(
 		
 		--[[ Sets the Size for this Control. If the Path is non-empty, updates the Size for this Control on-screen.
 		--
-		-- @param width				Width for this Control
-		-- @param height			Height for this Control
+		-- @param width				Width for this Control. Options are: Number.
+		-- @param height			Height for this Control. Options are: Number.
 		--]]
 		public.setSize = function(width, height)
 			private.width = width;
@@ -111,10 +118,10 @@ Control = setmetatable(
 		
 		--[[ Sets the Bounds for this Control. If the Path is non-empty, updates the Bounds for this Control on-screen.
 		--
-		-- @param x					X-coordinate for this Control
-		-- @param y					Y-coordinate for this Control
-		-- @param width				Width for this Control
-		-- @param height			Height for this Control
+		-- @param x					X-coordinate for this Control. Options are: Number.
+		-- @param y					Y-coordinate for this Control. Options are: Number.
+		-- @param width				Width for this Control. Options are: Number.
+		-- @param height			Height for this Control. Options are: Number.
 		--]]
 		public.setBounds = function(x, y, width, height)
 			private.x = x;
@@ -131,7 +138,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Color for this Control.
 		--
-		-- @return					Color for this Control
+		-- @return					Color for this Control.
 		--]]
 		public.getColor = function()
 			return private.color;
@@ -139,7 +146,7 @@ Control = setmetatable(
 		
 		--[[ Sets the Color for this Control. If the Path is non-empty, updates the Color for this Control on-screen.
 		--
-		-- @param color				Color for this Control
+		-- @param color				Color for this Control. Options are: Color. See "classes\Color.scar" for more information.
 		--]]
 		public.setColor = function(color)
 			private.color = color;
@@ -153,7 +160,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Children for this Control.
 		--
-		-- @return					Children for this Control
+		-- @return					Children for this Control.
 		--]]
 		public.getChildren = function()
 			return private.children;
@@ -161,7 +168,7 @@ Control = setmetatable(
 		
 		--[[ Adds a Child to this Control. Sets this Control as the Parent of the given Child. If the Path is non-empty, call the onAdd method of the Child.
 		--
-		-- @param child					Child to add
+		-- @param child				Child to add. Options are: Button, Icon, Label, Panel, StatusIndicator.
 		--]]
 		public.add = function(child)
 			local path = public.getPath();
@@ -186,7 +193,7 @@ Control = setmetatable(
 		
 		--[[ Removes a Child from this Control.
 		--
-		-- @param childToRemove		Child to remove
+		-- @param childToRemove		Child to remove. Options are: Button, Icon, Label, Panel, StatusIndicator.
 		--]]
 		public.remove = function(childToRemove)
 			for i,child in ipairs(public.getChildren())
@@ -202,7 +209,7 @@ Control = setmetatable(
 		
 		--[[ Gets the Parent for this Control.
 		--
-		-- @return					Parent for this Control
+		-- @return					Parent for this Control.
 		--]]
 		public.getParent = function()
 			return private.parent;
@@ -210,7 +217,7 @@ Control = setmetatable(
 		
 		--[[ Sets the Parent for this Control.
 		--
-		-- @return					Parent for this Control
+		-- @return					Parent for this Control.
 		--]]
 		public.setParent = function(parent)
 			private.parent = parent;

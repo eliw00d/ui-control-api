@@ -2,6 +2,10 @@ import("WinConditions/classes/controls/Panel.scar");
 
 local super = Panel;
 
+--[[ The Root Panel is equivalent to a Frame in Java. There should only be one.
+--
+-- Constructor: RootPanel()
+--]]
 RootPanel = setmetatable(
 {
 
@@ -13,7 +17,8 @@ RootPanel = setmetatable(
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
-		do			
+		do
+			-- The Root must always be an empty string. DO NOT MODIFY!
 			public.onAdd("");
 		end
 		

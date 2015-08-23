@@ -2,6 +2,10 @@ import("WinConditions/classes/Control.scar");
 
 local super = Control;
 
+--[[ The Status Indicator is equivalent to a progress bar. 
+--
+-- Constructor: StatusIndicator()
+--]]
 StatusIndicator = setmetatable(
 {
 	count = 0,
@@ -13,10 +17,18 @@ StatusIndicator = setmetatable(
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
+		--[[ Gets the Value of this Status Indicator.
+		--
+		-- @return			Value of this Status Indicator.
+		--]]
 		public.getValue = function()
 			return private.value or 0;
 		end
 		
+		--[[ Sets the Value of this Status Indicator. If the Path is non-empty, updates the Value for this Status Indicator on-screen.
+		--
+		-- @param value		Value of this Status Indicator. Options are: Number.
+		--]]
 		public.setValue = function(value)	
 			private.value = value;
 		
@@ -27,6 +39,10 @@ StatusIndicator = setmetatable(
 			end
 		end
 		
+		--[[ Adds this Status Indicator to the given Path. If Color has been specified, sets the Color of the Control as well. Also adds all children.
+		--
+		-- @param path		Path of the Parent. Options are: String.
+		--]]
 		public.onAdd = function(path)
 			public.setPath(path);
 		
@@ -39,7 +55,8 @@ StatusIndicator = setmetatable(
 			end
 		end
 		
-		do			
+		do		
+			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;
 			public.setName("si" .. static.count);
 		end

@@ -2,6 +2,10 @@ import("WinConditions/classes/Control.scar");
 
 local super = Control;
 
+--[[ The Icon class allows you to create an image.
+--
+-- Constructor: Icon([icon])
+--]]
 Icon = setmetatable(
 {
 	count = 0,
@@ -9,14 +13,22 @@ Icon = setmetatable(
 {
 	__index = super,
 
-	__call = function(static)
+	__call = function(static, icon)
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
+		--[[ Gets the Icon for this Icon.
+		--
+		-- @return			Icon for this Icon.
+		--]]
 		public.getIcon = function()
 			return private.icon or "";
 		end
 		
+		--[[ Sets the Icon for this Icon.
+		--
+		-- @param icon		Icon for this Icon. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
+		--]]
 		public.setIcon = function(icon)	
 			private.icon = icon;
 			
@@ -27,15 +39,25 @@ Icon = setmetatable(
 			end			
 		end
 		
+		--[[ Adds this Icon to the given Path.
+		--
+		-- @param path		Path of the Parent. Options are: String.
+		--]]
 		public.onAdd = function(path)
 			public.setPath(path);
 		
 			UI_IconAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getIcon());
 		end
 		
-		do			
+		do		
+			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;
 			public.setName("i" .. static.count);
+			
+			-- If Icon is given as an argument, set it.
+			if ( icon ) then
+				public.setIcon(icon);
+			end
 		end
 		
 		return public;

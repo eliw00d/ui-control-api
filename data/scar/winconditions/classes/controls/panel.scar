@@ -2,6 +2,10 @@ import("WinConditions/classes/Control.scar");
 
 local super = Control;
 
+--[[ The Panel class allows you to group other Controls at a specific location, so that their locations are then relative to the Panel.
+--
+-- Constructor: Panel()
+--]]
 Panel = setmetatable(
 {
 	count = 0,
@@ -13,6 +17,10 @@ Panel = setmetatable(
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
+		--[[ Adds this Panel to the given Path. If Color has been specified, sets the Color of the Control as well. Also adds all children.
+		--
+		-- @param path		Path of the Parent. Options are: String.
+		--]]
 		public.onAdd = function(path)
 			public.setPath(path);
 		
@@ -31,6 +39,7 @@ Panel = setmetatable(
 		end
 		
 		do			
+			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;
 			public.setName("p" .. static.count);
 		end

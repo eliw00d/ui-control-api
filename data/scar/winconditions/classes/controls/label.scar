@@ -2,6 +2,10 @@ import("WinConditions/classes/Control.scar");
 
 local super = Control;
 
+--[[ The Label class allows you to create a line or block of text. It is automatically word-wrapped.
+--
+-- Constructor: Label([text])
+--]]
 Label = setmetatable(
 {
 	count = 0,
@@ -9,54 +13,102 @@ Label = setmetatable(
 {
 	__index = super,
 
-	__call = function(static)
+	__call = function(static, text)
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
+		--[[ Gets the Horizontal Alignment for this Label.
+		--
+		-- @return							Horizontal Alignment for this Label.
+		--]]
 		public.getHorizontalAlignment = function()
 			return private.horizontalAlignment or LAH_Justify;
 		end
 		
+		--[[ Sets the Horizontal Alignment for this Label.
+		--
+		-- @param horizontalAlignment		Horizontal Alignment for this Label. Options are: LAH_Justify, LAH_Left, LAH_Center, LAH_Right. WARNING: Currently bugged, may not work as expected.
+		--]]
 		public.setHorizontalAlignment = function(horizontalAlignment)
 			private.horizontalAlignment = horizontalAlignment;
 		end
 		
+		--[[ Gets the Vertical Alignment for this Label.
+		--
+		-- @return							Vertical Alignment for this Label.
+		--]]
 		public.getVerticalAlignment = function()
 			return private.verticalAlignment or LAV_None;
 		end
 		
+		--[[ Sets the Vertical Alignment for this Label.
+		--
+		-- @param verticalAlignment			Vertical Alignment for this Label. Options are: LAV_None, LAV_Top, LAV_Center, LAV_Bottom. WARNING: Currently bugged, may not work as expected.
+		--]]
 		public.setVerticalAlignment = function(verticalAlignment)
 			private.verticalAlignment = verticalAlignment;
 		end
 		
+		--[[ Gets whether or not the Label is bolded.
+		--
+		-- @return 							Whether or not the Label is bolded.
+		--]]
 		public.isBolded = function()
 			return private.isBolded or false;
 		end
 		
+		--[[ Sets whether or not the Label is bolded.
+		--
+		-- @param isBolded					Whether or not the Label is bolded. Options are: true, false.
+		--]]
 		public.setBolded = function(isBolded)
 			private.isBolded = isBolded;
 		end
 		
+		--[[ Gets whether or not the Label is italicized.
+		--
+		-- @return 							Whether or not the Label is italicized.
+		--]]
 		public.isItalicized = function()
 			return private.isItalicized or false;
 		end
 		
+		--[[ Sets whether or not the Label is italicized.
+		--
+		-- @param isItalicized				Whether or not the Label is italicized. Options are true, false.
+		--]]
 		public.setItalicized = function(isItalicized)
 			private.isItalicized = isItalicized;
 		end
 		
+		--[[ Gets the Font Size for this Label.
+		--
+		-- @return							Font Size for this Label.
+		--]]
 		public.getFontSize = function()
 			return private.fontSize or 12;
 		end
 		
+		--[[ Sets the Font Size for this Label.
+		--
+		-- @param fontSize					Font Size for this Label. Options are: Number.
+		--]]
 		public.setFontSize = function(fontSize)
 			private.fontSize = fontSize;
 		end
 		
+		--[[ Gets the Text for this Label.
+		--
+		-- @return							Text for this Label.
+		--]]
 		public.getText = function()
-			return private.text or Loc_Empty();
+			return private.text or "";
 		end
 		
+		--[[ Sets the Text for this Label. If the Path is non-empty, updates the Text for this Label on-screen.
+		--
+		-- @param text						Text for this Label. Options are: Number, String. Number format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
+		--]]
 		public.setText = function(text)		
 			private.text = text;
 		
@@ -67,6 +119,10 @@ Label = setmetatable(
 			end
 		end
 		
+		--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
+		--
+		-- @param path						Path of the Parent. Options are: String.
+		--]]
 		public.onAdd = function(path)
 			public.setPath(path);
 		
@@ -80,8 +136,14 @@ Label = setmetatable(
 		end
 		
 		do			
+			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;		
 			public.setName("l" .. static.count);
+			
+			-- If Text is given as an argument, set it.
+			if ( text ) then
+				public.setText(text);		
+			end
 		end
 		
 		return public;

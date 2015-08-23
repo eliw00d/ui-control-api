@@ -2,6 +2,10 @@ import("WinConditions/classes/Control.scar");
 
 local super = Control;
 
+--[[ The Button class is the only subclass of Control that can be interacted with. You can set a Callback for a mouse click event.
+--
+-- Constructor: Button([text], [icon])
+--]]
 Button = setmetatable(
 {
 	count = 0,
@@ -15,7 +19,7 @@ Button = setmetatable(
 		
 		--[[ Gets whether or not the Button is enabled.
 		--
-		-- @return					Whether or not the Button is enabled.
+		-- @return				Whether or not the Button is enabled.
 		--]]
 		public.isEnabled = function()
 			if ( private.isEnabled == nil ) then
@@ -27,7 +31,7 @@ Button = setmetatable(
 		
 		--[[ Sets whether or not the Button is enabled. If the Path is an empty string, sets whether or not the Button is enabled on-screen.
 		--
-		-- @param isEnabled			Whether or not the Button is enabled.
+		-- @param isEnabled		Whether or not the Button is enabled. Options are: true, false.
 		--]]
 		public.setEnabled = function(isEnabled)
 			private.isEnabled = isEnabled;
@@ -40,14 +44,16 @@ Button = setmetatable(
 		end
 		
 		--[[ Gets the Icon for this Button.
-		-- @return					Icon for this Button.
+		--
+		-- @return				Icon for this Button.
 		--]]
 		public.getIcon = function()
 			return private.icon or "";
 		end
 		
-		--[[ Sets the Icon for this Button in memory. If the Path is non-empty, updates the Icon for this Button on-screen.
-		-- @param icon				Icon for this Button.
+		--[[ Sets the Icon for this Button. If the Path is non-empty, updates the Icon for this Button on-screen.
+		--
+		-- @param icon			Icon for this Button. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
 		--]]
 		public.setIcon = function(icon)	
 			private.icon = icon;
@@ -60,28 +66,32 @@ Button = setmetatable(
 		end
 		
 		--[[ Gets the Icon Style for this Button.
-		-- @return					Icon Style for this Button.
+		--
+		-- @return				Icon Style for this Button.
 		--]]
 		public.getIconStyle = function()
 			return private.iconStyle or BIS_Icon;
 		end
 		
 		--[[ Set the Icon Style for this Button. 
-		-- @param iconStyle			Icon Style for this Button. Options are BIS_Icon and BIS_IconState. BIS_Icon applies its own filters to the icon. BIS_IconState looks for _disabled, _down, _over, and _up suffixed icons.
+		--
+		-- @param iconStyle		Icon Style for this Button. Options are BIS_Icon, BIS_IconState. BIS_Icon applies its own filters to the icon. BIS_IconState looks for icons with _disabled, _down, _over, and _up appended to the given icon name.
 		--]]
 		public.setIconStyle = function(iconStyle)
 			private.iconStyle = iconStyle;
 		end
 		
 		--[[ Get the Tag for this Button.
-		-- @return					Tag for this Button. Can be used in Callbacks.
+		--
+		-- @return				Tag for this Button. 
 		--]]
 		public.getTag = function()
 			return private.tag or "";
 		end
 		
 		--[[ Sets the Tag for this Button. If the Path is non-empty, updates the Tag for this Button on-screen.
-		-- @param tag				Tag for this Button. Can be used in Callbacks.
+		--
+		-- @param tag			Tag for this Button. Options are String. Used in Callbacks.
 		--]]
 		public.setTag = function(tag)
 			private.tag = tag;
@@ -94,15 +104,17 @@ Button = setmetatable(
 		end
 		
 		--[[ Gets the Text for this Button.
-		-- @return					Text for this Button.
+		--
+		-- @return				Text for this Button.
 		--]]
 		public.getText = function()
-			return private.text or Loc_Empty();
+			return private.text or "";
 		end
 		
 		
 		--[[ Sets the Text for this Button. If the Path is non-empty, updates the Text for this Button on-screen.
-		-- @param text				Text for this Button. Assumed to be a LocString. If not, creates a LocString for you using the given Lua String.
+		--
+		-- @param text			Text for this Button. Options are: Integer, String. Integer format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
 		--]]
 		public.setText = function(text)		
 			private.text = text;
@@ -115,14 +127,16 @@ Button = setmetatable(
 		end
 		
 		--[[ Gets the Callback for this Button.
-		-- @return					Callback for this Button.
+		--
+		-- @return				Callback for this Button.
 		--]]
 		public.getCallback = function()
 			return private.callback or "";
 		end
 		
 		--[[ Sets the Callback for this Button.
-		-- @param func				Callback for this Button.
+		--
+		-- @param func			Callback for this Button. Options are: Function. Function can be anonymous.
 		--]]
 		public.setCallback = function(func)
 			local callback = public.getName();
@@ -138,8 +152,9 @@ Button = setmetatable(
 			end
 		end
 		
-		--[[ Adds this Button to the given Path.
-		-- @param					Path of the Parent.
+		--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
+		--
+		-- @param path			Path of the Parent.
 		--]]
 		public.onAdd = function(path)			
 			public.setPath(path);

@@ -57,11 +57,7 @@ Label = setmetatable(
 			return private.text or Loc_Empty();
 		end
 		
-		public.setText = function(text)
-			if ( type(text) ~= "userdata" ) then
-				text = LOC(text);
-			end
-		
+		public.setText = function(text)		
 			private.text = text;
 		
 			local path = public.getPath();

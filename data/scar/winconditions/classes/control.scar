@@ -182,6 +182,12 @@ Control = setmetatable(
 			table.insert(private.children, child);
 		end
 		
+		--[[
+		--
+		--]]
+		public.onAdd = function(path) 
+		end
+		
 		--[[ Clears any Children of this Control.
 		--
 		--]]

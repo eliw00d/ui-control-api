@@ -13,7 +13,7 @@ StatusIndicator = setmetatable(
 {
 	__index = super,
 
-	__call = function(static)
+	__call = function(static, value)
 		local public = setmetatable(super(), static);		
 		local private = {};
 		
@@ -59,6 +59,11 @@ StatusIndicator = setmetatable(
 			-- This is for naming the Control. DO NOT MODIFY!
 			static.count = static.count + 1;
 			public.setName("si" .. static.count);
+			
+			-- If Value is given as an argument, set it.
+			if ( value ) then
+				public.setValue(value);		
+			end
 		end
 		
 		return public;

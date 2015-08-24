@@ -108,7 +108,7 @@ Button = setmetatable(
 		-- @return				Text for this Button.
 		--]]
 		public.getText = function()
-			return private.text or "";
+			return private.text or Loc_Empty();
 		end
 		
 		

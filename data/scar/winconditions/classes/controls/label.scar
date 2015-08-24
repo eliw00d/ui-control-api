@@ -102,7 +102,7 @@ Label = setmetatable(
 		-- @return							Text for this Label.
 		--]]
 		public.getText = function()
-			return private.text or "";
+			return private.text or Loc_Empty();
 		end
 		
 		--[[ Sets the Text for this Label. If the Path is non-empty, updates the Text for this Label on-screen.

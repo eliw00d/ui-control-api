@@ -95,6 +95,10 @@ Label = setmetatable(
 		--]]
 		public.setFontSize = function(fontSize)
 			private.fontSize = fontSize;
+			
+			---[[ Temporary band-aid until Relic fixes the issue.
+			public.setBounds(public.getX(), public.getY() - public.getFontSize() / 2, public.getWidth(), public.getHeight() * 2);
+			--]]
 		end
 		
 		--[[ Gets the Text for this Label.

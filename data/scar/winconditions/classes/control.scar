@@ -149,7 +149,7 @@ function Control:setColor(color)
 	end
 
 	if self._path ~= "" and self._color then
-		UI_ControlSetColour(self._path, self_.color.getRed(), self._color.getGreen(), self._color.getBlue(), self._color.getAlpha());
+		UI_ControlSetColour(self._path, self._color.getRed(), self._color.getGreen(), self._color.getBlue(), self._color.getAlpha());
 	end
 end
 

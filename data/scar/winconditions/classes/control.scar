@@ -161,6 +161,23 @@ function Control:getChildren()
 	return self._children;
 end
 
+--[[ Checks to see if this Control has a given Child.
+
+-- @param child				Child to check for.
+--
+-- @return					Whether or not this control has the given Child.
+--]]
+function Control:has(child)
+	for i,_child in ipairs(self._children) 
+	do 
+		if _child == child then 
+			return true;
+		end 
+	end 
+
+	return false;
+end 
+
 --[[ Adds a Child to this Control. Sets this Control as the Parent of the given Child. If the Path is non-empty, call the onAdd method of the Child.
 --
 -- @param child				Child to add. Options are: Button, Icon, Label, Panel, StatusIndicator.

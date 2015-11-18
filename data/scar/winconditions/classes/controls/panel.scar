@@ -1,49 +1,35 @@
 import("WinConditions/classes/Control.scar");
 
-local super = Control;
-
 --[[ The Panel class allows you to group other Controls at a specific location, so that their locations are then relative to the Panel.
 --
 -- Constructor: Panel()
 --]]
-Panel = setmetatable(
-{
-	count = 0,
-},
-{
-	__index = super,
+Panel = Class(Control, function(self)
+	-- Call SuperClass Constructor. DO NOT MODIFY!
+	Control._constructor(self);
 
-	__call = function(static)
-		local public = setmetatable(super(), static);		
-		local private = {};
-		
-		--[[ Adds this Panel to the given Path. If Color has been specified, sets the Color of the Control as well. Also adds all children.
-		--
-		-- @param path		Path of the Parent. Options are: String.
-		--]]
-		public.onAdd = function(path)
-			public.setPath(path);
-		
-			UI_PanelAdd(path, public.getName(), public.getX(), public.getY());
-			
-			local color = public.getColor();
-			
-			if ( color ) then
-				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-			end
-			
-			for _,child in pairs(public.getChildren())
-			do
-				child.onAdd(public.getPath());
-			end
-		end
-		
-		do			
-			-- This is for naming the Control. DO NOT MODIFY!
-			static.count = static.count + 1;
-			public.setName("p" .. static.count);
-		end
-		
-		return public;
-	end,
-});
+	-- This is for naming the Control. DO NOT MODIFY!
+	Panel._count = Panel._count + 1;
+	
+	-- Define Instance Variables;
+	self._name = "p" .. Panel._count;
+end)
+
+Panel._count = 0;
+
+--[[ Adds this Panel to the given Path. If Color has been specified, sets the Color of the Control as well. Also adds all children.
+--
+-- @param path		Path of the Parent. Options are: String.
+--]]
+function Panel:onAdd(path)
+	Control.onAdd(self, path);
+
+	UI_PanelAdd(path, self._name, self._x, self._y);
+	
+	self:setColor();
+	
+	for i,_child in ipairs(self._children)
+	do
+		_child:onAdd(self._path);
+	end
+end

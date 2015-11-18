@@ -1,189 +1,155 @@
 import("WinConditions/classes/Control.scar");
 
-local super = Control;
-
 --[[ The Button class is the only subclass of Control that can be interacted with. You can set a Callback for a mouse click event.
 --
 -- Constructor: Button([text], [icon])
 --]]
-Button = setmetatable(
-{
-	count = 0,
-},
-{
-	__index = super,
+Button = Class(Control, function(self, text, icon)
+	-- Call SuperClass Constructor. DO NOT MODIFY!
+	Control._constructor(self);
+	
+	-- This is for naming the Control. DO NOT MODIFY!
+	Button._count = Button._count + 1;	
 
-	__call = function(static, text, icon)
-		local public = setmetatable(super(), static);		
-		local private = {};		
-		
-		--[[ Gets whether or not the Button is enabled.
-		--
-		-- @return				Whether or not the Button is enabled.
-		--]]
-		public.isEnabled = function()
-			if ( private.isEnabled == nil ) then
-				private.isEnabled = true;
-			end
-		
-			return private.isEnabled;
-		end
-		
-		--[[ Sets whether or not the Button is enabled. If the Path is an empty string, sets whether or not the Button is enabled on-screen.
-		--
-		-- @param isEnabled		Whether or not the Button is enabled. Options are: true, false.
-		--]]
-		public.setEnabled = function(isEnabled)
-			private.isEnabled = isEnabled;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_ButtonSetEnabled(path, public.isEnabled());
-			end
-		end
-		
-		--[[ Gets the Icon for this Button.
-		--
-		-- @return				Icon for this Button.
-		--]]
-		public.getIcon = function()
-			return private.icon or "";
-		end
-		
-		--[[ Sets the Icon for this Button. If the Path is non-empty, updates the Icon for this Button on-screen.
-		--
-		-- @param icon			Icon for this Button. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
-		--]]
-		public.setIcon = function(icon)	
-			private.icon = icon;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_ButtonSetIcon(path, public.getIcon());
-			end
-		end
-		
-		--[[ Gets the Icon Style for this Button.
-		--
-		-- @return				Icon Style for this Button.
-		--]]
-		public.getIconStyle = function()
-			return private.iconStyle or BIS_Icon;
-		end
-		
-		--[[ Set the Icon Style for this Button. 
-		--
-		-- @param iconStyle		Icon Style for this Button. Options are BIS_Icon, BIS_IconState. BIS_Icon applies its own filters to the icon. BIS_IconState looks for icons with _disabled, _down, _over, and _up appended to the given icon name.
-		--]]
-		public.setIconStyle = function(iconStyle)
-			private.iconStyle = iconStyle;
-		end
-		
-		--[[ Get the Tag for this Button.
-		--
-		-- @return				Tag for this Button. 
-		--]]
-		public.getTag = function()
-			return private.tag or "";
-		end
-		
-		--[[ Sets the Tag for this Button. If the Path is non-empty, updates the Tag for this Button on-screen.
-		--
-		-- @param tag			Tag for this Button. Options are String. Used in Callbacks.
-		--]]
-		public.setTag = function(tag)
-			private.tag = tag;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_ButtonSetTag(path, public.getTag());
-			end
-		end
-		
-		--[[ Gets the Text for this Button.
-		--
-		-- @return				Text for this Button.
-		--]]
-		public.getText = function()
-			return private.text or Loc_Empty();
-		end
-		
-		
-		--[[ Sets the Text for this Button. If the Path is non-empty, updates the Text for this Button on-screen.
-		--
-		-- @param text			Text for this Button. Options are: Integer, String. Integer format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
-		--]]
-		public.setText = function(text)		
-			private.text = text;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_ButtonSetText(path, public.getText());
-			end
-		end
-		
-		--[[ Gets the Callback for this Button.
-		--
-		-- @return				Callback for this Button.
-		--]]
-		public.getCallback = function()
-			return private.callback or "";
-		end
-		
-		--[[ Sets the Callback for this Button.
-		--
-		-- @param func			Callback for this Button. Options are: Function. Function can be anonymous.
-		--]]
-		public.setCallback = function(func)
-			local callback = public.getName();
-		
-			_G[callback] = func;
-		
-			private.callback = callback;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_ButtonSetCallback(path, public.getCallback());
-			end
-		end
-		
-		--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
-		--
-		-- @param path			Path of the Parent.
-		--]]
-		public.onAdd = function(path)			
-			public.setPath(path);
-		
-			UI_ButtonAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getCallback(), public.isEnabled(), public.getIcon(), public.getIconStyle(), public.getTag(), public.getText());
-			
-			local color = public.getColor();
-			
-			if ( color ) then			
-				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-			end
-		end
-		
-		do
-			-- This is for naming the Control. DO NOT MODIFY!
-			static.count = static.count + 1;		
-			public.setName("b" .. static.count);
-			
-			-- If Text is given as an argument, set it.
-			if ( text ) then
-				public.setText(text);		
-			end
-			
-			-- If Icon is given as an argument, set it.
-			if ( icon ) then
-				public.setIcon(icon);
-			end
-		end
-		
-		return public;
-	end,
-});
+	-- Define Instance Variables.
+	self._name = "b" .. Button._count;	
+	self._callback = "";
+	self._icon = icon or "";
+	self._iconStyle = BIS_Icon;
+	self._isEnabled = true;	
+	self._tag = "";
+	self._text = text or Loc_Empty();
+end)
+
+Button._count = 0;
+
+--[[ Gets the Callback for this Button.
+--
+-- @return				Callback for this Button.
+--]]
+function Button:getCallback()
+	return self._callback;
+end
+
+--[[ Sets the Callback for this Button.
+--
+-- @param func			Callback for this Button. Options are: Function. Function can be anonymous.
+--]]
+function Button:setCallback(callbackFunction)
+	self._callback = self._name;
+
+	_G[self._callback] = callbackFunction;
+
+	if self._path ~= "" then
+		UI_ButtonSetCallback(self._path, self._callback);
+	end
+end
+
+--[[ Gets the Icon for this Button.
+--
+-- @return				Icon for this Button.
+--]]
+function Button:getIcon()
+	return self._icon;
+end
+
+--[[ Sets the Icon for this Button. If the Path is non-empty, updates the Icon for this Button on-screen.
+--
+-- @param icon			Icon for this Button. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
+--]]
+function Button:setIcon(icon)	
+	self._icon = icon;
+
+	if self._path ~= "" then
+		UI_ButtonSetIcon(self._path, self._icon);
+	end
+end
+
+--[[ Gets the Icon Style for this Button.
+--
+-- @return				Icon Style for this Button.
+--]]
+function Button:getIconStyle()
+	return self._iconStyle;
+end
+
+--[[ Set the Icon Style for this Button. 
+--
+-- @param iconStyle		Icon Style for this Button. Options are BIS_Icon, BIS_IconState. BIS_Icon applies its own filters to the icon. BIS_IconState looks for icons with _disabled, _down, _over, and _up appended to the given icon name.
+--]]
+function Button:setIconStyle(iconStyle)
+	self._iconStyle = iconStyle;
+end
+
+--[[ Gets whether or not the Button is enabled.
+--
+-- @return				Whether or not the Button is enabled.
+--]]
+function Button:isEnabled()
+	return self._isEnabled;
+end
+
+--[[ Sets whether or not the Button is enabled. If the Path is an empty string, sets whether or not the Button is enabled on-screen.
+--
+-- @param isEnabled		Whether or not the Button is enabled. Options are: true, false.
+--]]
+function Button:setEnabled(isEnabled)
+	self._isEnabled = isEnabled;
+
+	if self._path ~= "" then
+		UI_ButtonSetEnabled(self._path, self._isEnabled);
+	end
+end
+
+--[[ Get the Tag for this Button.
+--
+-- @return				Tag for this Button. 
+--]]
+function Button:getTag()
+	return self._tag;
+end
+
+--[[ Sets the Tag for this Button. If the Path is non-empty, updates the Tag for this Button on-screen.
+--
+-- @param tag			Tag for this Button. Options are String. Used in Callbacks.
+--]]
+function Button:setTag(tag)
+	self._tag = tag;
+
+	if self._path ~= "" then
+		UI_ButtonSetTag(self._path, self._tag);
+	end
+end
+
+--[[ Gets the Text for this Button.
+--
+-- @return				Text for this Button.
+--]]
+function Button:getText()
+	return self._text;
+end
+
+
+--[[ Sets the Text for this Button. If the Path is non-empty, updates the Text for this Button on-screen.
+--
+-- @param text			Text for this Button. Options are: Integer, String. Integer format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
+--]]
+function Button:setText(text)		
+	self._text = text;
+
+	if self._path ~= "" then
+		UI_ButtonSetText(self._path, self._text);
+	end
+end
+
+--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
+--
+-- @param path			Path of the Parent.
+--]]
+function Button:onAdd(path)			
+	Control.onAdd(self, path);
+
+	UI_ButtonAdd(path, self._name, self._x, self._y, self._width, self._height, self._callback, self._isEnabled, self._icon, self._iconStyle, self._tag, self._text);
+	
+	self:setColor();
+end

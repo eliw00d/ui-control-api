@@ -1,155 +1,136 @@
 import("WinConditions/classes/Control.scar");
 
-local super = Control;
-
 --[[ The Label class allows you to create a line or block of text. It is automatically word-wrapped.
 --
 -- Constructor: Label([text])
 --]]
-Label = setmetatable(
-{
-	count = 0,
-},
-{
-	__index = super,
+Label = Class(Control, function(self, text)
+	-- Call SuperClass Constructor. DO NOT MODIFY!
+	Control._constructor(self);
+	
+	-- This is for naming the Control. DO NOT MODIFY!
+	Label._count = Label._count + 1;	
+	
+	-- Define Instance Variables.
+	self._name = "l" .. Label._count;
+	self._horizontalAlignment = LAH_Justify;
+	self._verticalAlignment = LAV_None;
+	self._isBolded = false;
+	self._isItalicized = false;
+	self._fontSize = 12;
+	self._text = text or Loc_Empty();
+end)
 
-	__call = function(static, text)
-		local public = setmetatable(super(), static);		
-		local private = {};
-		
-		--[[ Gets the Horizontal Alignment for this Label.
-		--
-		-- @return							Horizontal Alignment for this Label.
-		--]]
-		public.getHorizontalAlignment = function()
-			return private.horizontalAlignment or LAH_Justify;
-		end
-		
-		--[[ Sets the Horizontal Alignment for this Label.
-		--
-		-- @param horizontalAlignment		Horizontal Alignment for this Label. Options are: LAH_Justify, LAH_Left, LAH_Center, LAH_Right. WARNING: Currently bugged, may not work as expected.
-		--]]
-		public.setHorizontalAlignment = function(horizontalAlignment)
-			private.horizontalAlignment = horizontalAlignment;
-		end
-		
-		--[[ Gets the Vertical Alignment for this Label.
-		--
-		-- @return							Vertical Alignment for this Label.
-		--]]
-		public.getVerticalAlignment = function()
-			return private.verticalAlignment or LAV_None;
-		end
-		
-		--[[ Sets the Vertical Alignment for this Label.
-		--
-		-- @param verticalAlignment			Vertical Alignment for this Label. Options are: LAV_None, LAV_Top, LAV_Center, LAV_Bottom. WARNING: Currently bugged, may not work as expected.
-		--]]
-		public.setVerticalAlignment = function(verticalAlignment)
-			private.verticalAlignment = verticalAlignment;
-		end
-		
-		--[[ Gets whether or not the Label is bolded.
-		--
-		-- @return 							Whether or not the Label is bolded.
-		--]]
-		public.isBolded = function()
-			return private.isBolded or false;
-		end
-		
-		--[[ Sets whether or not the Label is bolded.
-		--
-		-- @param isBolded					Whether or not the Label is bolded. Options are: true, false.
-		--]]
-		public.setBolded = function(isBolded)
-			private.isBolded = isBolded;
-		end
-		
-		--[[ Gets whether or not the Label is italicized.
-		--
-		-- @return 							Whether or not the Label is italicized.
-		--]]
-		public.isItalicized = function()
-			return private.isItalicized or false;
-		end
-		
-		--[[ Sets whether or not the Label is italicized.
-		--
-		-- @param isItalicized				Whether or not the Label is italicized. Options are true, false.
-		--]]
-		public.setItalicized = function(isItalicized)
-			private.isItalicized = isItalicized;
-		end
-		
-		--[[ Gets the Font Size for this Label.
-		--
-		-- @return							Font Size for this Label.
-		--]]
-		public.getFontSize = function()
-			return private.fontSize or 12;
-		end
-		
-		--[[ Sets the Font Size for this Label.
-		--
-		-- @param fontSize					Font Size for this Label. Options are: Number.
-		--]]
-		public.setFontSize = function(fontSize)
-			private.fontSize = fontSize;
-			
-			---[[ Temporary band-aid until Relic fixes the issue.
-			public.setBounds(public.getX(), public.getY() - public.getFontSize() / 2, public.getWidth(), public.getHeight() * 2);
-			--]]
-		end
-		
-		--[[ Gets the Text for this Label.
-		--
-		-- @return							Text for this Label.
-		--]]
-		public.getText = function()
-			return private.text or Loc_Empty();
-		end
-		
-		--[[ Sets the Text for this Label. If the Path is non-empty, updates the Text for this Label on-screen.
-		--
-		-- @param text						Text for this Label. Options are: Number, String. Number format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
-		--]]
-		public.setText = function(text)		
-			private.text = text;
-		
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_LabelSetText(path, public.getText());
-			end
-		end
-		
-		--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
-		--
-		-- @param path						Path of the Parent. Options are: String.
-		--]]
-		public.onAdd = function(path)
-			public.setPath(path);
-		
-			UI_LabelAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getHorizontalAlignment(), public.getVerticalAlignment(), public.isBolded(), public.isItalicized(), public.getFontSize(), public.getText());
-			
-			local color = public.getColor();
-			
-			if ( color ) then			
-				UI_ControlSetColour(public.getPath(), color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
-			end
-		end
-		
-		do			
-			-- This is for naming the Control. DO NOT MODIFY!
-			static.count = static.count + 1;		
-			public.setName("l" .. static.count);
-			
-			-- If Text is given as an argument, set it.
-			if ( text ) then
-				public.setText(text);		
-			end
-		end
-		
-		return public;
-	end,
-});
+Label._count = 0;
+
+--[[ Gets the Horizontal Alignment for this Label.
+--
+-- @return							Horizontal Alignment for this Label.
+--]]
+function Label:getHorizontalAlignment()
+	return self._horizontalAlignment;
+end
+
+--[[ Sets the Horizontal Alignment for this Label.
+--
+-- @param horizontalAlignment		Horizontal Alignment for this Label. Options are: LAH_Justify, LAH_Left, LAH_Center, LAH_Right. WARNING: Currently bugged, may not work as expected.
+--]]
+function Label:setHorizontalAlignment(horizontalAlignment)
+	self._horizontalAlignment = horizontalAlignment;
+end
+
+--[[ Gets the Vertical Alignment for this Label.
+--
+-- @return							Vertical Alignment for this Label.
+--]]
+function Label:getVerticalAlignment()
+	return self._verticalAlignment;
+end
+
+--[[ Sets the Vertical Alignment for this Label.
+--
+-- @param verticalAlignment			Vertical Alignment for this Label. Options are: LAV_None, LAV_Top, LAV_Center, LAV_Bottom. WARNING: Currently bugged, may not work as expected.
+--]]
+function Label:setVerticalAlignment(verticalAlignment)
+	self._verticalAlignment = verticalAlignment;
+end
+
+--[[ Gets whether or not the Label is bolded.
+--
+-- @return 							Whether or not the Label is bolded.
+--]]
+function Label:isBolded()
+	return self._isBolded;
+end
+
+--[[ Sets whether or not the Label is bolded.
+--
+-- @param isBolded					Whether or not the Label is bolded. Options are: true, false.
+--]]
+function Label:setBolded(isBolded)
+	self._isBolded = isBolded;
+end
+
+--[[ Gets whether or not the Label is italicized.
+--
+-- @return 							Whether or not the Label is italicized.
+--]]
+function Label:isItalicized()
+	return self._isItalicized;
+end
+
+--[[ Sets whether or not the Label is italicized.
+--
+-- @param isItalicized				Whether or not the Label is italicized. Options are true, false.
+--]]
+function Label:setItalicized(isItalicized)
+	self._isItalicized = isItalicized;
+end
+
+--[[ Gets the Font Size for this Label.
+--
+-- @return							Font Size for this Label.
+--]]
+function Label:getFontSize()
+	return self._fontSize;
+end
+
+--[[ Sets the Font Size for this Label.
+--
+-- @param fontSize					Font Size for this Label. Options are: Number.
+--]]
+function Label:setFontSize(fontSize)
+	self._fontSize = fontSize;
+end
+
+--[[ Gets the Text for this Label.
+--
+-- @return							Text for this Label.
+--]]
+function Label:getText()
+	return self._text;
+end
+
+--[[ Sets the Text for this Label. If the Path is non-empty, updates the Text for this Label on-screen.
+--
+-- @param text						Text for this Label. Options are: Number, String. Number format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
+--]]
+function Label:setText(text)		
+	self._text = text;
+	
+	if self._path ~= "" then
+		UI_LabelSetText(self._path, self._text);
+	end
+end
+
+--[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
+--
+-- @param path						Path of the Parent. Options are: String.
+--]]
+function Label:onAdd(path)
+	Control.onAdd(self, path);
+
+	UI_LabelAdd(path, self._name, self._x, self._y, self._width, self._height, self._horizontalAlignment, self._verticalAlignment, self._isBolded, self._isItalicized, self._fontSize, self._text);
+	
+	self:setColor();
+end

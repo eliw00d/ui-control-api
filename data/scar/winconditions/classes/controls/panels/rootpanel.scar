@@ -1,27 +1,13 @@
 import("WinConditions/classes/controls/Panel.scar");
 
-local super = Panel;
-
 --[[ The Root Panel is equivalent to a Frame in Java. There should only be one.
 --
 -- Constructor: RootPanel()
 --]]
-RootPanel = setmetatable(
-{
+RootPanel = Class(Panel, function(self)
+	-- Call SuperClass Constructor. DO NOT MODIFY!
+	Panel._constructor(self);
 
-},
-{
-	__index = super,
-
-	__call = function(static)
-		local public = setmetatable(super(), static);		
-		local private = {};
-		
-		do
-			-- The Root must always be an empty string. DO NOT MODIFY!
-			public.onAdd("");
-		end
-		
-		return public;
-	end,
-});
+	-- The Root must always be an empty string. DO NOT MODIFY!
+	self:onAdd("");
+end)

@@ -1,65 +1,51 @@
 import("WinConditions/classes/Control.scar");
 
-local super = Control;
-
 --[[ The Icon class allows you to create an image.
 --
 -- Constructor: Icon([icon])
 --]]
-Icon = setmetatable(
-{
-	count = 0,
-},
-{
-	__index = super,
+Icon = Class(Control, function(self, icon)
+	-- Call SuperClass Constructor. DO NOT MODIFY!
+	Control._constructor(self);
+	
+	-- This is for naming the Control. DO NOT MODIFY!
+	Icon._count = Icon._count + 1;	
 
-	__call = function(static, icon)
-		local public = setmetatable(super(), static);		
-		local private = {};
+	-- Define Instance Variables.
+	self._name = "i" .. Icon._count;
+	self._icon = icon or "";
+end)
+
+Icon._count = 0;
 		
-		--[[ Gets the Icon for this Icon.
-		--
-		-- @return			Icon for this Icon.
-		--]]
-		public.getIcon = function()
-			return private.icon or "";
-		end
-		
-		--[[ Sets the Icon for this Icon.
-		--
-		-- @param icon		Icon for this Icon. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
-		--]]
-		public.setIcon = function(icon)	
-			private.icon = icon;
-			
-			local path = public.getPath();
-		
-			if ( path ~= "" ) then
-				UI_IconSetIcon(path, public.getIcon());
-			end			
-		end
-		
-		--[[ Adds this Icon to the given Path.
-		--
-		-- @param path		Path of the Parent. Options are: String.
-		--]]
-		public.onAdd = function(path)
-			public.setPath(path);
-		
-			UI_IconAdd(path, public.getName(), public.getX(), public.getY(), public.getWidth(), public.getHeight(), public.getIcon());
-		end
-		
-		do		
-			-- This is for naming the Control. DO NOT MODIFY!
-			static.count = static.count + 1;
-			public.setName("i" .. static.count);
-			
-			-- If Icon is given as an argument, set it.
-			if ( icon ) then
-				public.setIcon(icon);
-			end
-		end
-		
-		return public;
-	end,
-});
+--[[ Gets the Icon for this Icon.
+--
+-- @return			Icon for this Icon.
+--]]
+function Icon:getIcon = function()
+	return self._icon;
+end
+
+--[[ Sets the Icon for this Icon.
+--
+-- @param icon		Icon for this Icon. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
+--]]
+function Icon:setIcon = function(icon)	
+	self._icon = icon;
+
+	if self._path ~= "" then
+		UI_IconSetIcon(self._path, self._icon);
+	end			
+end
+
+--[[ Adds this Icon to the given Path.
+--
+-- @param path		Path of the Parent. Options are: String.
+--]]
+function Icon:onAdd = function(path)
+	Control.onAdd(self, path);
+
+	UI_IconAdd(path, self._name, self._x, self._y, self._width, self._height, self._icon);
+	
+	self:setColor();
+end

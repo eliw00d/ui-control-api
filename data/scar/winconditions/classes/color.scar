@@ -1,63 +1,15 @@
--- Base Class, no super
+import("WinConditions/Class.scar")
 
 --[[ The Color class contains the red, green, blue, and alpha values needed to create Colors.
 --
 -- Constructor: Color([r], [g], [b], [a])
 --]]
-Color = setmetatable(
-{
-
-},
-{
-	-- Base Class, no __index
-
-	__call = function(static, red, green, blue, alpha)
-		local public = setmetatable({}, static);		
-		local private = {};
-		
-		--[[ Gets the Red value of this Color.
-		--
-		-- @return		Red value
-		--]]
-		public.getRed = function()
-			return private.red or 0;
-		end
-		
-		--[[ Gets the Green value in this Color.
-		--
-		-- @return		Green value
-		--]]
-		public.getGreen = function()
-			return private.green or 0;
-		end
-		
-		--[[ Gets the Blue value in this Color.
-		--
-		-- @return		Blue value
-		--]]
-		public.getBlue = function()
-			return private.blue or 0;
-		end
-		
-		--[[ Gets the Alpha value in this Color.
-		--
-		-- @return		Alpha value
-		--]]
-		public.getAlpha = function()
-			return private.alpha or 255;
-		end
-		
-		do
-			-- Initialize Red, Green, Blue, and Alpha values to non-nil arguments. DO NOT MODIFY!
-			private.red = red;
-			private.green = green;
-			private.blue = blue;
-			private.alpha = alpha;
-		end
-		
-		return public;
-	end,
-});
+Color = Class(nil, function(self, red, green, blue, alpha)
+	self._red = red or 0;
+	self._green = green or 0;
+	self._blue = blue or 0;
+	self._alpha = alpha or 255;
+end)
 
 -- Primary Colors
 Color.Red = Color(255, 0, 0);
@@ -70,3 +22,35 @@ Color.White = Color(255, 255, 255);
 
 -- Custom Colors
 -- TODO: Add your own colors here.
+		
+--[[ Gets the Red value of this Color.
+--
+-- @return		Red value
+--]]
+function Color:getRed()
+	return self._red;
+end
+
+--[[ Gets the Green value in this Color.
+--
+-- @return		Green value
+--]]
+function Color:getGreen()
+	return self._green;
+end
+
+--[[ Gets the Blue value in this Color.
+--
+-- @return		Blue value
+--]]
+function Color:getBlue()
+	return self._blue;
+end
+
+--[[ Gets the Alpha value in this Color.
+--
+-- @return		Alpha value
+--]]
+function Color:getAlpha()
+	return self._alpha;
+end

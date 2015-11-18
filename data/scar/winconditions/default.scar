@@ -64,16 +64,16 @@ local function WinCondition_Init()
 	local panel = Panel();
 		  --panel.setLocation(16, 16);
 		  
-	rootPanel.add(panel);
+	rootPanel:add(panel);
 	
 	local button = Button("$043d372bfbda460e99c80ead66f64aed:1", "ModIcons_043d372bfbda460e99c80ead66f64aed_button");
-		  button.setLocation(16, 16);
-		  button.setSize(128, 64);
-		  button.setCallback(function()
-			panel.remove(button);
+		  button:setLocation(16, 16);
+		  button:setSize(128, 64);
+		  button:setCallback(function()
+			panel:remove(button);
 		  end)
 		  
-	panel.add(button);
+	panel:add(button);
 end
 
 Scar_AddInit(WinCondition_Init)

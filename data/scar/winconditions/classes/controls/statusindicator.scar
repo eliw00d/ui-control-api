@@ -22,7 +22,7 @@ StatusIndicator._count = 0;
 --
 -- @return			Value of this Status Indicator.
 --]]
-self:getValue = function()
+self:getValue()
 	return self._value;
 end
 
@@ -30,7 +30,7 @@ end
 --
 -- @param value		Value of this Status Indicator. Options are: Number.
 --]]
-function StatusIndicator:setValue = function(value)	
+function StatusIndicator:setValue(value)	
 	self._value = value;
 
 	if self._path ~= "" then
@@ -42,7 +42,7 @@ end
 --
 -- @param path		Path of the Parent. Options are: String.
 --]]
-function StatusIndicator:onAdd = function(path)
+function StatusIndicator:onAdd(path)
 	Control.onAdd(self, path);
 
 	UI_StatusIndicatorAdd(path, self._name, self._x, self._y, self._width, self._height, self._value);

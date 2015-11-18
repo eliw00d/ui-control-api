@@ -22,7 +22,7 @@ Icon._count = 0;
 --
 -- @return			Icon for this Icon.
 --]]
-function Icon:getIcon = function()
+function Icon:getIcon()
 	return self._icon;
 end
 
@@ -30,7 +30,7 @@ end
 --
 -- @param icon		Icon for this Icon. Options are: String. String format is: "ModIcons_<ModID>_<Filename>", where Filename can include subfolders, but not extension.
 --]]
-function Icon:setIcon = function(icon)	
+function Icon:setIcon(icon)	
 	self._icon = icon;
 
 	if self._path ~= "" then
@@ -42,7 +42,7 @@ end
 --
 -- @param path		Path of the Parent. Options are: String.
 --]]
-function Icon:onAdd = function(path)
+function Icon:onAdd(path)
 	Control.onAdd(self, path);
 
 	UI_IconAdd(path, self._name, self._x, self._y, self._width, self._height, self._icon);

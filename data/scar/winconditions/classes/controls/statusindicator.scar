@@ -22,7 +22,7 @@ StatusIndicator._count = 0;
 --
 -- @return			Value of this Status Indicator.
 --]]
-self:getValue()
+function StatusIndicator:getValue()
 	return self._value;
 end
 

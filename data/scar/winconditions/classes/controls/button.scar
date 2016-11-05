@@ -4,7 +4,7 @@ Button = Class()
 
 local super = Button:extends(Control)
 
-function Button:constructor(self, text, icon)
+function Button:constructor(text, icon)
 	super(self)
 	
 	Button._count = Button._count + 1	

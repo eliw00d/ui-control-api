@@ -4,7 +4,7 @@ RootPanel = Class()
 
 local super = RootPanel:extends(Panel)
 
-function(self)
+function RootPanel:constructor(self)
 	super(self)
 
 	self:_onAdd('')

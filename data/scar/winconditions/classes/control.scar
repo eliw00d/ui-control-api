@@ -128,7 +128,7 @@ function Control:add(child)
 	table.insert(self._children, child)
 end
 
-function Control:onAdd(path) 
+function Control:_onAdd(path) 
 	self:setPath(path)
 end
 

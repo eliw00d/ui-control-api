@@ -1,47 +1,66 @@
-function Class(superClass, constructor)
-	local class = {};
-	
-	if superClass then
-		for k,v in pairs(superClass) 
-		do
-			class[k] = v;
-		end
-		
-		class._superClass = superClass;
-	end
-	
-	class.__index = class;
-	
-	local metatable = {};
-	
-	function metatable:__call(...)
-		local instance = {};
-		setmetatable(instance, class);
-				
-		if class._constructor then
-			class._constructor(instance, ...);
-		end
-		
-		return instance;
-	end
-	
-	class._constructor = constructor;
-	
-	function class:isA(otherClass)
-        local mt = getmetatable(self);
-		
-        while mt
-		do
-            if mt == otherClass then
-				return true;
-			end
-            mt = mt._superClass;
+function Class()
+    local class = {}    
+    class.__index = class
+
+    function class:extends(super)
+        self.__super = super
+        for k,v in pairs(super) do
+            if (k ~= '__index' 
+			and k ~= 'constructor'
+			and k ~= 'new') then
+                self[k] = v
+            end
         end
-		
-        return false;
+
+        return super
     end
+    
+    function class:new(...)
+        local instance = {}
+        setmetatable(instance, self)
+        
+        if (self.constructor) then
+            self.constructor(instance, ...)
+        end
+        
+        return instance
+    end
+
+    function class:clone()
+        local clone = {}
+
+        for k,v in pairs(self) do
+            clone[k] = v
+        end
+
+        return clone
+    end
+
+    function class:isA(other)
+        local metatable = getmetatable(self)
+
+        while (metatable) do
+            if (metatable == other) then
+                return true
+            end
+            metatable = metatable.__super
+        end
+
+        return false
+    end
+    
+    local metatable = {}
+    setmetatable(class, metatable)
 	
-	setmetatable(class, metatable);
-	
-	return class;
+	function metatable:__call(instance, ...)		
+		if (class.constructor) then
+			class.constructor(instance, ...)
+		end
+	end
+    
+    function metatable:__tostring()
+        return self.name
+    end
+
+    return class
 end

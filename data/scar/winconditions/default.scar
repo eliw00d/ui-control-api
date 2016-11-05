@@ -1,9 +1,11 @@
-import("ScarUtil.scar")
-import("Fatalities/Fatalities.scar")
+import('ScarUtil.scar')
+import('Fatalities/Fatalities.scar')
 
-import("WinConditions/Classes/Controls/Button.scar")
-import("WinConditions/Classes/Controls/Panel.scar")
-import("WinConditions/Classes/Controls/Panels/RootPanel.scar")
+Import_Once('WinConditions/Class.scar')
+
+Import_Once('WinConditions/classes/controls/panels/RootPanel.scar')
+Import_Once('WinConditions/classes/controls/Panel.scar')
+Import_Once('WinConditions/classes/controls/Button.scar')
 
 function WinCondition_GameOver(winningTeam, losingTeam)
 	-- Set the winning team (this will fire win/loss events for each player).
@@ -18,7 +20,7 @@ end
 function WinCondition_Check()
 	local results = {}
 
-	-- Check every player on each team for ownership of the "annihilation_condition" entity.
+	-- Check every player on each team for ownership of the 'annihilation_condition' entity.
 	for i = 1, World_GetPlayerCount() do
 		local player = World_GetPlayerAt(i)
 		local team = Player_GetTeam(player)
@@ -30,12 +32,12 @@ function WinCondition_Check()
 			results[team].surrender_count = results[team].surrender_count + 1
 		end
 		
-		-- If at least one player on a given team owns an "annihilation_condition" entity, then that team has not yet lost.
+		-- If at least one player on a given team owns an 'annihilation_condition' entity, then that team has not yet lost.
 		if (Player_IsAlive(player)) then
 			local entities = Player_GetEntities(player)
 			for entityCount = 1, EGroup_CountSpawned(entities) do
 				local entity = EGroup_GetSpawnedEntityAt(entities, entityCount)
-				if (Entity_IsOfType(entity, "annihilation_condition")) then
+				if (Entity_IsOfType(entity, 'annihilation_condition')) then
 					results[team].annihilation_condition_count = results[team].annihilation_condition_count + 1
 					break
 				end
@@ -59,21 +61,23 @@ end
 local function WinCondition_Init()
 	Rule_AddInterval(WinCondition_Check, 3)
 	
-	local rootPanel = RootPanel();
+	local rootPanel = RootPanel:new()
 	
-	local panel = Panel();
-		  --panel.setLocation(16, 16);
+	local panel = Panel:new()
+		:setLocation(0, 0)
+		:setSize(128, 64)
 		  
-	rootPanel:add(panel);
+	rootPanel:add(panel)
 	
-	local button = Button("$043d372bfbda460e99c80ead66f64aed:1", "ModIcons_043d372bfbda460e99c80ead66f64aed_button");
-		  button:setLocation(16, 16);
-		  button:setSize(128, 64);
-		  button:setCallback(function()
-			panel:remove(button);
-		  end)
+	local button
+	button = Button:new('$043d372bfbda460e99c80ead66f64aed:1', 'ModIcons_043d372bfbda460e99c80ead66f64aed_button')
+		:setLocation(16, 16)
+		:setSize(128, 64)
+		:setCallback(function()
+			panel:remove(button)
+		end)
 		  
-	panel:add(button);
+	panel:add(button)
 end
 
 Scar_AddInit(WinCondition_Init)

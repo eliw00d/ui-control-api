@@ -1,13 +1,11 @@
-import("WinConditions/classes/controls/Panel.scar");
+Import_Once('WinConditions/classes/controls/Panel.scar')
 
---[[ The Root Panel is equivalent to a Frame in Java. There should only be one.
---
--- Constructor: RootPanel()
---]]
-RootPanel = Class(Panel, function(self)
-	-- Call SuperClass Constructor. DO NOT MODIFY!
-	Panel._constructor(self);
+RootPanel = Class()
 
-	-- The Root must always be an empty string. DO NOT MODIFY!
-	self:onAdd("");
-end)
+local super = RootPanel:extends(Panel)
+
+function RootPanel:constructor()
+	super(self)
+
+	self:_onAdd('')
+end

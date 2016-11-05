@@ -8,13 +8,13 @@ function Color:constructor(red, green, blue, alpha)
 end
 
 -- Primary Colors
-Color.Red = Color(255, 0, 0)
-Color.Green = Color(0, 255, 0)
-Color.Blue = Color(0, 0, 255)
+Color.Red = Color:new(255, 0, 0)
+Color.Green = Color:new(0, 255, 0)
+Color.Blue = Color:new(0, 0, 255)
 	
 -- Other Colors
-Color.Black = Color(0, 0, 0)
-Color.White = Color(255, 255, 255)
+Color.Black = Color:new(0, 0, 0)
+Color.White = Color:new(255, 255, 255)
 
 -- Custom Colors
 -- TODO: Add your own colors here.

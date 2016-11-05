@@ -1,136 +1,93 @@
-import("WinConditions/classes/Control.scar");
+Import_Once('WinConditions/classes/Control.scar')
 
---[[ The Label class allows you to create a line or block of text. It is automatically word-wrapped.
---
--- Constructor: Label([text])
---]]
-Label = Class(Control, function(self, text)
-	-- Call SuperClass Constructor. DO NOT MODIFY!
-	Control._constructor(self);
+Label = Class()
+
+local super = Label:extends(Control)
+
+function Label:constructor(text)
+	super(self)
 	
-	-- This is for naming the Control. DO NOT MODIFY!
-	Label._count = Label._count + 1;	
+	Label._count = Label._count + 1	
 	
-	-- Define Instance Variables.
-	self._name = "l" .. Label._count;
-	self._horizontalAlignment = LAH_Justify;
-	self._verticalAlignment = LAV_None;
-	self._isBolded = false;
-	self._isItalicized = false;
-	self._fontSize = 12;
-	self._text = text or Loc_Empty();
-end)
+	self._name = 'l' .. Label._count
+	self._horizontalAlignment = LAH_Justify
+	self._verticalAlignment = LAV_None
+	self._isBolded = false
+	self._isItalicized = false
+	self._fontSize = 12
+	self._text = text or Loc_Empty()
+end
 
-Label._count = 0;
+Label._count = 0
 
---[[ Gets the Horizontal Alignment for this Label.
---
--- @return							Horizontal Alignment for this Label.
---]]
 function Label:getHorizontalAlignment()
-	return self._horizontalAlignment;
+	return self._horizontalAlignment
 end
 
---[[ Sets the Horizontal Alignment for this Label.
---
--- @param horizontalAlignment		Horizontal Alignment for this Label. Options are: LAH_Justify, LAH_Left, LAH_Center, LAH_Right. WARNING: Currently bugged, may not work as expected.
---]]
 function Label:setHorizontalAlignment(horizontalAlignment)
-	self._horizontalAlignment = horizontalAlignment;
+	self._horizontalAlignment = horizontalAlignment
+
+	return self
 end
 
---[[ Gets the Vertical Alignment for this Label.
---
--- @return							Vertical Alignment for this Label.
---]]
 function Label:getVerticalAlignment()
-	return self._verticalAlignment;
+	return self._verticalAlignment
 end
 
---[[ Sets the Vertical Alignment for this Label.
---
--- @param verticalAlignment			Vertical Alignment for this Label. Options are: LAV_None, LAV_Top, LAV_Center, LAV_Bottom. WARNING: Currently bugged, may not work as expected.
---]]
 function Label:setVerticalAlignment(verticalAlignment)
-	self._verticalAlignment = verticalAlignment;
+	self._verticalAlignment = verticalAlignment
+
+	return self
 end
 
---[[ Gets whether or not the Label is bolded.
---
--- @return 							Whether or not the Label is bolded.
---]]
 function Label:isBolded()
-	return self._isBolded;
+	return self._isBolded
 end
 
---[[ Sets whether or not the Label is bolded.
---
--- @param isBolded					Whether or not the Label is bolded. Options are: true, false.
---]]
 function Label:setBolded(isBolded)
-	self._isBolded = isBolded;
+	self._isBolded = isBolded
+
+	return self
 end
 
---[[ Gets whether or not the Label is italicized.
---
--- @return 							Whether or not the Label is italicized.
---]]
 function Label:isItalicized()
-	return self._isItalicized;
+	return self._isItalicized
 end
 
---[[ Sets whether or not the Label is italicized.
---
--- @param isItalicized				Whether or not the Label is italicized. Options are true, false.
---]]
 function Label:setItalicized(isItalicized)
-	self._isItalicized = isItalicized;
+	self._isItalicized = isItalicized
+
+	return self
 end
 
---[[ Gets the Font Size for this Label.
---
--- @return							Font Size for this Label.
---]]
 function Label:getFontSize()
-	return self._fontSize;
+	return self._fontSize
 end
 
---[[ Sets the Font Size for this Label.
---
--- @param fontSize					Font Size for this Label. Options are: Number.
---]]
 function Label:setFontSize(fontSize)
-	self._fontSize = fontSize;
+	self._fontSize = fontSize
+
+	return self
 end
 
---[[ Gets the Text for this Label.
---
--- @return							Text for this Label.
---]]
 function Label:getText()
-	return self._text;
+	return self._text
 end
 
---[[ Sets the Text for this Label. If the Path is non-empty, updates the Text for this Label on-screen.
---
--- @param text						Text for this Label. Options are: Number, String. Number format is: <LocStringID>. String formats are: "$<ModID>:<LocStringID>" and "$<LocStringID>"
---]]
 function Label:setText(text)		
-	self._text = text;
+	self._text = text
 	
-	if self._path ~= "" then
-		UI_LabelSetText(self._path, self._text);
+	if (self._path ~= '') then
+		UI_LabelSetText(self._path, self._text)
 	end
+
+	return self
 end
 
---[[ Adds this Button to the given Path. If Color has been specified, sets the Color of the Control as well.
---
--- @param path						Path of the Parent. Options are: String.
---]]
-function Label:onAdd(path)
-	Control.onAdd(self, path);
+function Label:_onAdd(path)
+	super._onAdd(self, path)
 
-	UI_LabelAdd(path, self._name, self._x, self._y, self._width, self._height, self._horizontalAlignment, self._verticalAlignment, self._isBolded, self._isItalicized, self._fontSize, self._text);
+	UI_LabelAdd(path, self._name, self._x, self._y, self._width, self._height, self._horizontalAlignment, self._verticalAlignment, self._isBolded, self._isItalicized, self._fontSize, self._text)
 	
-	self:setColor();
+	self:setColor()
 end

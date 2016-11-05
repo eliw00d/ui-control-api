@@ -1,51 +1,38 @@
-import("WinConditions/classes/Control.scar");
+Import_Once('WinConditions/classes/Control.scar')
 
---[[ The Status Indicator is equivalent to a progress bar. 
---
--- Constructor: StatusIndicator()
---]]
-StatusIndicator = Class(Control, function(self, value)
-	-- Call SuperClass Constructor. DO NOT MODIFY!
-	Control._constructor(self);
+StatusIndicator = Class()
+
+local super = StatusIndicator:extends(Control)
+
+function StatusIndicator:constructor(value)
+	super(self)
 	
-	-- This is for naming the Control. DO NOT MODIFY!
-	StatusIndicator._count = StatusIndicator._count + 1;	
+	StatusIndicator._count = StatusIndicator._count + 1	
 	
-	-- Define Instance Variables.
-	self._name = "si" .. StatusIndicator._count;
-	self._value = value or 0;
-end)
+	self._name = 'si' .. StatusIndicator._count
+	self._value = value or 0
+end
 
-StatusIndicator._count = 0;
+StatusIndicator._count = 0
 
---[[ Gets the Value of this Status Indicator.
---
--- @return			Value of this Status Indicator.
---]]
 function StatusIndicator:getValue()
-	return self._value;
+	return self._value
 end
 
---[[ Sets the Value of this Status Indicator. If the Path is non-empty, updates the Value for this Status Indicator on-screen.
---
--- @param value		Value of this Status Indicator. Options are: Number.
---]]
 function StatusIndicator:setValue(value)	
-	self._value = value;
+	self._value = value
 
-	if self._path ~= "" then
-		UI_StatusIndicatorSetValue(self._path, self._value);	
+	if (self._path ~= '') then
+		UI_StatusIndicatorSetValue(self._path, self._value)	
 	end
+
+	return self
 end
 
---[[ Adds this Status Indicator to the given Path. If Color has been specified, sets the Color of the Control as well. Also adds all children.
---
--- @param path		Path of the Parent. Options are: String.
---]]
-function StatusIndicator:onAdd(path)
-	Control.onAdd(self, path);
+function StatusIndicator:_onAdd(path)
+	super._onAdd(self, path)
 
-	UI_StatusIndicatorAdd(path, self._name, self._x, self._y, self._width, self._height, self._value);
+	UI_StatusIndicatorAdd(path, self._name, self._x, self._y, self._width, self._height, self._value)
 	
-	self:setColor();
+	self:setColor()
 end

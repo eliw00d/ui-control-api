@@ -1,243 +1,161 @@
-import("WinConditions/Class.scar")
+Import_Once('WinConditions/classes/Color.scar')
 
-import("WinConditions/Classes/Color.scar");
+Control = Class()
 
---[[ The Control class should be considered an abstract class, and so should not be instantiated. It is meant for providing common functionality to all inheriting subclasses.
---
---]]
-Control = Class(nil, function(self)
+function Control:constructor()
 	-- Define Instance Variables
-	self._path = "";
-	self._name = "";
-	self._x = 0;
-	self._y = 0;
-	self._width = 0;
-	self._height = 0;
-	self._color = nil;
-	self._children = {};
+	self._path = ''
+	self._name = ''
+	self._x = 0
+	self._y = 0
+	self._width = 0
+	self._height = 0
+	self._color = nil
+	self._children = {}
 end)
 
---[[ Gets the Path for this Control.
--- 
--- @return					Path for this Control.
---]]
 function Control:getPath()
-	return self._path;
+	return self._path
 end
 
---[[ Sets the Path for this Control. If the given Path is an empty string, sets the Path to the Name. Otherwise, append the Name to the given Path.
---
--- @param					Path for this Control. Options are: String.
---]]
 function Control:setPath(path)
-	if path == "" then
-		self._path = self._name;
+	if (path == '') then
+		self._path = self._name
 	else
-		self._path = path .. "." .. self._name;
+		self._path = path .. '.' .. self._name
 	end
+
+	return self
 end
 
---[[ Gets the Name for this Control.
---
--- @return					Name for this Control.
---]]
 function Control:getName()
-	return self._name;
+	return self._name
 end
 
---[[ Sets the Name for this Control.
---
--- @param name				Name for this Control. Options are: String.
---]]
 function Control:setName(name)
-	self._name = name;
+	self._name = name
+
+	return self
 end
 
---[[ Gets the X-coordinate for this Control.
---
--- @return					X-coordinate for this Control.
---]]
 function Control:getX()
-	return self._x;
+	return self._x
 end
 
---[[ Gets the Y-coordinate for this Control.
---
--- @return					Y-coordinate for this Control.
---]]
 function Control:getY()
-	return self._y;
+	return self._y
 end
 
---[[ Sets the Location for this Control. If the Path is non-empty, updates the Location for this Control on-screen.
---
--- @param x					X-coordinate for this Control. Options are: Number.
--- @param y					Y-coordinate for this Control. Options are: Number.
---]]
 function Control:setLocation(x, y)
-	self._x = x;
-	self._y = y;
+	self._x = x
+	self._y = y
 
-	if self._path ~= "" then
-		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height);
+	if (self._path ~= '') then
+		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height)
 	end
+
+	return self
 end
 
---[[ Gets the Width for this Control.
---
--- @return					Width for this Control.
---]]
 function Control:getWidth()
-	return self._width;
+	return self._width
 end
 
---[[ Gets the Height for this Control.
---
--- @return					Height for this Control.
---]]
 function Control:getHeight()
-	return self._height;
+	return self._height
 end
 
---[[ Sets the Size for this Control. If the Path is non-empty, updates the Size for this Control on-screen.
---
--- @param width				Width for this Control. Options are: Number.
--- @param height			Height for this Control. Options are: Number.
---]]
 function Control:setSize(width, height)
-	self._width = width;
-	self._height = height;
+	self._width = width
+	self._height = height
 
-	if self._path ~= "" then
-		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height);
+	if (self._path ~= '') then
+		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height)
 	end
+
+	return self
 end
 
---[[ Sets the Bounds for this Control. If the Path is non-empty, updates the Bounds for this Control on-screen.
---
--- @param x					X-coordinate for this Control. Options are: Number.
--- @param y					Y-coordinate for this Control. Options are: Number.
--- @param width				Width for this Control. Options are: Number.
--- @param height			Height for this Control. Options are: Number.
---]]
 function Control:setBounds(x, y, width, height)
-	self._x = x;
-	self._y = y;
-	self._width = width;
-	self._height = height;
+	self._x = x
+	self._y = y
+	self._width = width
+	self._height = height
 
-	if self._path ~= "" then
-		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height);
+	if (self._path ~= '') then
+		UI_ControlSetRect(self._path, self._x, self._y, self._width, self._height)
 	end
+
+	return self
 end
 
---[[ Gets the Color for this Control.
---
--- @return					Color for this Control.
---]]
 function Control:getColor()
-	return self._color;
+	return self._color
 end
 
---[[ Sets the Color for this Control. If the Path is non-empty, updates the Color for this Control on-screen.
---
--- @param color				Color for this Control. Options are: Color. See "WinConditions\Classes\Color.scar" for more information.
---]]
 function Control:setColor(color)
-	if color then
-		self._color = color;
+	self._color = color
+
+	if (self._path ~= '' and self._color) then
+		UI_ControlSetColour(self._path, self._color:getRed(), self._color:getGreen(), self._color:getBlue(), self._color:getAlpha())
 	end
 
-	if self._path ~= "" and self._color then
-		UI_ControlSetColour(self._path, self._color:getRed(), self._color:getGreen(), self._color:getBlue(), self._color:getAlpha());
-	end
+	return self
 end
 
---[[ Gets the Children for this Control.
---
--- @return					Children for this Control.
---]]
 function Control:getChildren()
-	return self._children;
+	return self._children
 end
 
---[[ Checks to see if this Control has a given Child.
-
--- @param child				Child to check for.
---
--- @return					Whether or not this control has the given Child.
---]]
 function Control:has(child)
 	for i,_child in ipairs(self._children) 
 	do 
 		if _child == child then 
-			return true;
+			return true
 		end 
 	end 
 
-	return false;
+	return false
 end 
 
---[[ Adds a Child to this Control. Sets this Control as the Parent of the given Child. If the Path is non-empty, call the onAdd method of the Child.
---
--- @param child				Child to add. Options are: Button, Icon, Label, Panel, StatusIndicator.
---]]
 function Control:add(child)
-	child:setParent(public);
+	child:setParent(public)
 	
-	if self._path ~= "" then
-		child:onAdd(self._path);
+	if (self._path ~= '') then
+		child:onAdd(self._path)
 	end
 	
-	table.insert(self._children, child);
+	table.insert(self._children, child)
 end
 
---[[
---
---]]
 function Control:onAdd(path) 
-	self:setPath(path);
+	self:setPath(path)
 end
 
---[[ Clears any Children of this Control.
---
---]]
 function Control:clear()
-	self._children = {};
+	self._children = {}
 
-	if self._path ~= "" then
-		UI_ControlClear(self._path);
+	if (self._path ~= '') then
+		UI_ControlClear(self._path)
 	end
 end
 
---[[ Removes a Child from this Control.
---
--- @param child				Child to remove. Options are: Button, Icon, Label, Panel, StatusIndicator.
---]]
 function Control:remove(child)
 	for i,_child in ipairs(self._children)
 	do
 		if _child == child then
-			self._children[i] = nil;
-			break;
+			self._children[i] = nil
+			break
 		end
 	end
 
-	UI_ControlRemove(child:getPath());
+	UI_ControlRemove(child:getPath())
 end
 
---[[ Gets the Parent for this Control.
---
--- @return					Parent for this Control.
---]]
 function Control:getParent()
-	return self._parent;
+	return self._parent
 end
 
---[[ Sets the Parent for this Control.
---
--- @return					Parent for this Control.
---]]
 function Control:setParent(parent)
-	self._parent = parent;
+	self._parent = parent
 end

@@ -12,7 +12,7 @@ function Control:constructor()
 	self._height = 0
 	self._color = nil
 	self._children = {}
-end)
+end
 
 function Control:getPath()
 	return self._path

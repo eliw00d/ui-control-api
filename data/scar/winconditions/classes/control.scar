@@ -122,7 +122,7 @@ function Control:add(child)
 	child:setParent(public)
 	
 	if (self._path ~= '') then
-		child:onAdd(self._path)
+		child:_onAdd(self._path)
 	end
 	
 	table.insert(self._children, child)

@@ -69,7 +69,8 @@ local function WinCondition_Init()
 		  
 	rootPanel:add(panel)
 	
-	local button = Button:new('$043d372bfbda460e99c80ead66f64aed:1', 'ModIcons_043d372bfbda460e99c80ead66f64aed_button')
+	local button
+	button = Button:new('$043d372bfbda460e99c80ead66f64aed:1', 'ModIcons_043d372bfbda460e99c80ead66f64aed_button')
 		:setLocation(16, 16)
 		:setSize(128, 64)
 		:setCallback(function()

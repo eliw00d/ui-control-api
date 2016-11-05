@@ -140,16 +140,16 @@ function Control:clear()
 	end
 end
 
-function Control:remove(child)
-	for i,_child in ipairs(self._children)
-	do
-		if _child == child then
-			self._children[i] = nil
-			break
+function Control:remove(childToRemove)
+	for index = #self._children, 1, -1 do
+		local child = self._children[index]
+
+		if (child == childToRemove) then
+			table.remove(self._children, index)
 		end
 	end
 
-	UI_ControlRemove(child:getPath())
+	UI_ControlRemove(childToRemove:getPath())
 end
 
 function Control:getParent()
